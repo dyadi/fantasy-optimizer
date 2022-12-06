@@ -16,6 +16,9 @@ namespace GameLog {
 
             std::unordered_map<std::string, double> getStats();
 
+            void showGameLog();
+
+
         private:
             int fg;
             int fga;

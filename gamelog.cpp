@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "gamelog.h"
 
 namespace GameLog {
@@ -90,4 +92,10 @@ namespace GameLog {
         //     "dd"
         // }
     }
+
+    void GameLog::showGameLog(){
+        std::cout << "fg" << "\t" <<  "fga" << "\t" <<  "fg3" << "\t" <<  "fg3a" << "\t" <<  "ft" << "\t" <<  "fta" << "\t" <<  "orb" << "\t" <<  "drb" << "\t" <<  "ast" << "\t" <<  "stl" << "\t" <<  "blk" << "\t" <<  "tov" << "\t" <<  "pf" << std::endl;
+        std::cout << fg << "\t" <<  fga << "\t" <<  fg3 << "\t" <<  fg3a << "\t" <<  ft << "\t" <<  fta << "\t" <<  orb << "\t" <<  drb << "\t" <<  ast << "\t" <<  stl << "\t" <<  blk << "\t" <<  tov << "\t" <<  pf << std::endl;
+    }
+
 }

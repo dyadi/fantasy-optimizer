@@ -37,7 +37,7 @@ namespace League {
 
     void League::load_data() {
 
-        std::ifstream raw_file("rawdata3.csv");
+        std::ifstream raw_file("rawdata_deduplicate.csv");
         std::string raw_line;
 
         // get_title
@@ -51,6 +51,8 @@ namespace League {
                 raw_line.erase(0, pos + delimiter.length()); 
                 col++;
         }
+
+        int cnt = 0;
 
         while(getline(raw_file, raw_line)){
             // parsing
@@ -134,7 +136,16 @@ namespace League {
             // }
             // std::cout << "================================================" << std::endl;
 
+            cnt++;
         }
+        
+
+        int sum = 0;
+        for(auto& [pid, ath] : id2athlete_map) {
+            sum += ath.getGameLogSize();
+        }
+
+        std::cout << "raw cnt:" << cnt << "\ngameLog cnt:" << sum << std::endl;
 
         return;
     }

@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "athlete.h"
+#include "utils/date.h"
 
 
 namespace Athlete {
@@ -10,7 +11,20 @@ namespace Athlete {
     Athlete::Athlete(std::string palyer_id, std::string palyer_name) : palyer_id(palyer_id), palyer_name(palyer_name) {}
 
     void Athlete::addGameLog(std::chrono::time_point<std::chrono::system_clock> date, GameLog::GameLog gamelog) {
+
+        // if(palyer_id == "bridgmi01" && date2gamelog.count(date)){
+        //     std::cout << "already in" << palyer_id << std::endl;
+        //     date2gamelog[date].showGameLog();
+        //     gamelog.showGameLog();
+        //     std::cout << palyer_id << " game played " << date2gamelog.size() << std::endl;
+        //     throw 50;
+        // }
+
         date2gamelog[date] = gamelog;
+        // if (palyer_id == "bridgmi01") {
+        //     std::cout << palyer_id << " game played " << date2gamelog.size() << std::endl;
+        // }
+        
     }
 
     void Athlete::addPosition(std::string pos) {
@@ -31,6 +45,10 @@ namespace Athlete {
 
         std::cout << std::endl;
 
+    }
+
+    int Athlete::getGameLogSize(){
+        return date2gamelog.size();
     }
 
 }
