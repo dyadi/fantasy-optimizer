@@ -12,6 +12,8 @@ namespace League {
         public:
             League();
             void load_data();
+            void showAthlete(std::string);
+            int getAthleteNum();
 
         private:
             // call by constructor, load data

@@ -15,6 +15,10 @@ namespace Athlete {
 
             Athlete(std::string, std::string);
 
+            void showInfo();
+
+            void addPosition(std::string);
+
             void addGameLog(std::chrono::time_point<std::chrono::system_clock>, GameLog::GameLog);
 
             // getAccGameLog();
