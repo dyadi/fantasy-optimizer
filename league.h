@@ -3,21 +3,24 @@
 #include <string>
 
 
-#include "player.h"
-#include "athelete.h"
+// #include "player.h"
+#include "athlete.h"
 
+namespace League {
 
-class League {
-    public:
-        League();
+    class League {
+        public:
+            League();
+            void load_data();
 
-    private:
-        // call by constructor, load data
-        void load_data();
+        private:
+            // call by constructor, load data
+            
 
-        std::vector<Player> player_list;
-        std::unordered_map<std::string, Athelete> id2athelete_map;
+            // std::vector<Player> player_list;
+            std::unordered_map<std::string, Athlete::Athlete> id2athlete_map;
 
-        int weekly_buget;
-        
-};
+            int weekly_buget;
+            
+    };
+}

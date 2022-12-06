@@ -1,18 +1,18 @@
-export module Player;
+// export module Player;
 
-#include <string>
+// #include <string>
 
-namespace Player {
-    export class Player {
-        // std::string TeamName = "ggg";
+// namespace Player {
+//     export class Player {
+//         // std::string TeamName = "ggg";
 
-        public:
-            Player() {
-                // TeamName = "fefwe";
-            }
+//         public:
+//             Player() {
+//                 // TeamName = "fefwe";
+//             }
 
-            std::string getTeamName() {
-                return "ggg";
-            }
-    };
-}
+//             std::string getTeamName() {
+//                 return "ggg";
+//             }
+//     };
+// }
