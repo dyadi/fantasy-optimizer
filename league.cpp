@@ -65,6 +65,16 @@ namespace League {
                 col++;
             }
 
+            // select season
+            if (parsed_line["season"] != "2023") {
+                continue;
+            }
+
+            // ignore if not played
+            if (parsed_line["did_not_play"] == "1"){
+                continue;
+            }
+
             // create or add log to player
             std::string player_id = parsed_line["player_id"];
             if (!id2athlete_map.count(player_id)) {
