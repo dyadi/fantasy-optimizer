@@ -10,10 +10,11 @@
 
 #include "utils/date.h"
 
+#define POSITION_THRESHOLD 20
+
 namespace League {
     
     League::League() {}
-            
 
     void League::load_data() {
 
@@ -44,13 +45,14 @@ namespace League {
             }
 
             // create or add log to player
-            string player_id = parsed_line["player_id"];
+            std::string player_id = parsed_line["player_id"];
             if (!id2athlete_map.count(player_id)) {
-                // create new player
+                // Athlete::Athlete newAthlete(player_id, parsed_line["player"]);
+                // id2athlete_map[player_id] = newAthlete;
             }
                 
-            istringstream iss {parsed_line["game_date"]};
-            chrono::sys_days key;
+            std::istringstream iss {parsed_line["game_date"]};
+            std::chrono::sys_days key;
             iss >> date::parse("%F", key);
             
             int fg = std::stoi(parsed_line["fg"]);
@@ -80,10 +82,6 @@ namespace League {
 
             break;
         }
-        
-        
         return;
     }
-
-
 }

@@ -33,11 +33,5 @@ namespace GameLog {
             int tov;
             int pf;
 
-            int pgpct;
-            int sgpct;
-            int sfpct;
-            int pfpct;
-            int cpct;
-
     };
 }
