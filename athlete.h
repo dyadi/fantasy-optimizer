@@ -1,3 +1,6 @@
+#ifndef ATHLETE_H
+#define ATHLETE_H
+
 #include <vector>
 #include <string>
 #include <chrono>
@@ -19,7 +22,7 @@ namespace Athlete {
 
             void addPosition(std::string);
 
-            void addGameLog(std::chrono::time_point<std::chrono::system_clock>, GameLog::GameLog);
+            void addGameLog(std::chrono::sys_days, GameLog::GameLog);
 
             int getGameLogSize();
 
@@ -31,7 +34,10 @@ namespace Athlete {
             std::string palyer_id;
             std::string palyer_name;
             std::unordered_set<std::string> positions;
-            std::map<std::chrono::time_point<std::chrono::system_clock>, GameLog::GameLog> date2gamelog;
+            std::map<std::chrono::sys_days, GameLog::GameLog> date2gamelog;
 
     };
+
 }
+
+#endif

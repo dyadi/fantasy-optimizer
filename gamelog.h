@@ -1,3 +1,6 @@
+#ifndef GAMELOG_H
+#define GAMELOG_H
+
 #include <string>
 #include <unordered_map>
 
@@ -38,3 +41,5 @@ namespace GameLog {
 
     };
 }
+
+#endif

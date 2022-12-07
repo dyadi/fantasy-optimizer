@@ -10,7 +10,7 @@ namespace Athlete {
 
     Athlete::Athlete(std::string palyer_id, std::string palyer_name) : palyer_id(palyer_id), palyer_name(palyer_name) {}
 
-    void Athlete::addGameLog(std::chrono::time_point<std::chrono::system_clock> date, GameLog::GameLog gamelog) {
+    void Athlete::addGameLog(std::chrono::sys_days date, GameLog::GameLog gamelog) {
 
         // if(palyer_id == "bridgmi01" && date2gamelog.count(date)){
         //     std::cout << "already in" << palyer_id << std::endl;

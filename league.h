@@ -1,28 +1,43 @@
+#ifndef LEAGUE_H
+#define LEAGUE_H
+
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <chrono>
+#include <map>
 
-
-// #include "player.h"
 #include "athlete.h"
+#include "team.h"
 
 namespace League {
 
     class League {
         public:
-            League();
-            void load_data();
+            League(std::string);
+            League(std::chrono::sys_days);
+            void loadData();
+
+            void addTeam(std::string);
+            void showTeams();
+            void showTeamPlayers(int);
+            void teamAddAthlete(int, std::string);
+
             void showAthlete(std::string);
-            int getAthleteNum();
+
+            int getAthleteCnt();
 
         private:
             // call by constructor, load data
-            
-
             // std::vector<Player> player_list;
-            std::unordered_map<std::string, Athlete::Athlete> id2athlete_map;
+            std::unordered_map<std::string, Athlete::Athlete> idToAthlete;
+            std::unordered_map<std::string, int> idToTeamNumber;
+            std::vector<Team::Team> teamList;
+            std::chrono::sys_days currDate;
 
-            int weekly_buget;
+            int weeklyBudget;
             
     };
 }
+
+#endif
