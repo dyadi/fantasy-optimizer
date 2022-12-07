@@ -24,22 +24,22 @@ namespace League {
     
     League::League(std::chrono::sys_days currDate) : currDate(currDate) {}
 
-    void League::showAthlete(std::string player_id) {
+    void League::showPlayer(std::string player_id) {
         
-        if (!idToAthlete.count(player_id)) {
+        if (!idToPlayer.count(player_id)) {
             std::cout << player_id << " not in the league" << std::endl;
             return;
         }
 
-        idToAthlete[player_id].showInfo();
+        idToPlayer[player_id].showInfo();
 
         return;
 
     }
     
-    int League::getAthleteCnt() {
+    int League::getPlayerCnt() {
 
-        return idToAthlete.size();
+        return idToPlayer.size();
 
     }
 
@@ -50,7 +50,7 @@ namespace League {
 
     void League::showTeams() {
         for (int i = 0; i < teamList.size(); ++i) {
-            std::cout << "Team No. " << i << " :" << teamList[i].getName() << std::endl;
+            std::cout << "Team No. " << i << ": " << teamList[i].getName() << std::endl;
         }
     }
 
@@ -62,14 +62,14 @@ namespace League {
         }
     }
 
-    void League::teamAddAthlete(int teamNo, std::string playerId){
+    void League::teamAddPlayer(int teamNo, std::string playerId){
         
         if (teamNo >= teamList.size()) {
             std::cout << "No team for given team number." << std::endl;
             return;
         }
 
-        if (!idToAthlete.count(playerId)){
+        if (!idToPlayer.count(playerId)){
             std::cout << "No such player exists." << std::endl;
             return;
         }
@@ -79,8 +79,9 @@ namespace League {
             return;
         }
         
-        idToTeamNumber[playerId] = teamNo;
-        teamList[teamNo].addAthlete(currDate, &idToAthlete[playerId]);
+        if (teamList[teamNo].addPlayer(currDate, &idToPlayer[playerId])) {
+            idToTeamNumber[playerId] = teamNo;
+        }
         
     }
 
@@ -126,11 +127,11 @@ namespace League {
 
             // create or add log to player
             std::string player_id = parsed_line["player_id"];
-            if (!idToAthlete.count(player_id)) {
-                Athlete::Athlete newAthlete(player_id, parsed_line["player"]);
-                idToAthlete[player_id] = newAthlete;
+            if (!idToPlayer.count(player_id)) {
+                Player::Player newPlayer(player_id, parsed_line["player"]);
+                idToPlayer[player_id] = newPlayer;
                 idToTeamNumber[player_id] = -1;
-                std::cout << "New Athlete\t" << parsed_line["player"] << std::endl;
+                std::cout << "New Player\t" << parsed_line["player"] << std::endl;
             }
 
             // Add GameLog
@@ -156,24 +157,24 @@ namespace League {
 
             GameLog::GameLog log(fg, fga, fg3, fg3a, ft, fta, orb, drb, ast, stl, blk, tov, pf);
             
-            idToAthlete[player_id].addGameLog(key, log);
+            idToPlayer[player_id].addGameLog(key, log);
 
             // Add Position
             try {
                 if (parsed_line["PG%"] != "NA" && std::stoi(parsed_line["PG%"]) >= POSITION_THRESHOLD) {
-                    idToAthlete[player_id].addPosition("PG");
+                    idToPlayer[player_id].addPosition("PG");
                 }
                 if (parsed_line["SG%"] != "NA" && std::stoi(parsed_line["SG%"]) >= POSITION_THRESHOLD) {
-                    idToAthlete[player_id].addPosition("SG");
+                    idToPlayer[player_id].addPosition("SG");
                 }
                 if (parsed_line["PF%"] != "NA" && std::stoi(parsed_line["PF%"]) >= POSITION_THRESHOLD) {
-                    idToAthlete[player_id].addPosition("PF");
+                    idToPlayer[player_id].addPosition("PF");
                 }
                 if (parsed_line["SF%"] != "NA" && std::stoi(parsed_line["SF%"]) >= POSITION_THRESHOLD) {
-                    idToAthlete[player_id].addPosition("SF");
+                    idToPlayer[player_id].addPosition("SF");
                 }
                 if (parsed_line["C%"] != "NA" && std::stoi(parsed_line["C%"]) >= POSITION_THRESHOLD) {
-                    idToAthlete[player_id].addPosition("C");
+                    idToPlayer[player_id].addPosition("C");
                 }
             } catch (...) {
                 std::cout << parsed_line["PG%"] << std::endl;
@@ -199,7 +200,7 @@ namespace League {
         
 
         int sum = 0;
-        for(auto& [pid, ath] : idToAthlete) {
+        for(auto& [pid, ath] : idToPlayer) {
             sum += ath.getGameLogSize();
         }
 

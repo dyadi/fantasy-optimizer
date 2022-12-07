@@ -4,78 +4,162 @@ namespace Roster {
 
     Roster::Roster() {}
 
-    bool Roster::isInRoster(Athlete::Athlete* athlete) {
-        return (
-            pgRoster.count(athlete) || sgRoster.count(athlete) ||
-            gRoster.count(athlete) || sfRoster.count(athlete) ||
-            pfRoster.count(athlete) || fRoster.count(athlete) ||
-            utilRoster.count(athlete) || bench.count(athlete)
-        );
-    }
-
-    int Roster::getTotalLimit() {
-        return sgLimit + pgLimit + gLimit + sfLimit + pfLimit + fLimit + utilLimit;
-    }
-
-    int Roster::getTotalPlayers() {
-        return (
-            pgRoster.size() + sgRoster.size() +
-            gRoster.size() + sfRoster.size() +
-            pfRoster.size() + fRoster.size() +
-            utilRoster.size() + bench.size()
-        );
-    }
-
-    bool Roster::addToBench(Athlete::Athlete* athlete) {
+    Roster::Roster(int benchSpot, int pgLimit, int sgLimit, int sfLimit, int pfLimit, int cLimit, int gLimit, int fLimit, int utilLimit) {
+                        
+        int args[9] {benchSpot, pgLimit, sgLimit, sfLimit, pfLimit, cLimit, gLimit, fLimit, utilLimit};
         
-        if (this->getTotalLimit() <= this->getTotalPlayers()) {
+        for (int i = 0; i < 9; ++i){
+            playerPlacement[positionTitle[i]] = std::unordered_set<Player::Player*>();
+            positionQuota[positionTitle[i]] = args[i];
+        }
+        
+    }
+
+    // Roster::Roster(const Roster& rhs) {}
+
+    bool Roster::isInRoster(Player::Player* player) {
+        for (auto& [_, pp] : playerPlacement) {
+            if (pp.count(player)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool Roster::addToBench(Player::Player* player) {
+        
+        if (playerPlacement["BN"].count(player)) {
+            return true;
+        }
+
+        if (getTotalPlayer() >= getTotalLimit()) {
             return false;
         }
         
-        if (dropFromEverySpot(athlete)) {
+        if (dropFromEverySpot(player)) {
             std::cout << "Player already in the roster, moved to bench" << std::endl;
         }
 
-        bench.insert(athlete);
+        playerPlacement["BN"].insert(player);
 
         return true;
         
     }
 
-    bool Roster::dropFromEverySpot(Athlete::Athlete* athlete) {
-        if (pgRoster.count(athlete)) {
-            pgRoster.erase(athlete);
+    bool Roster::placePlayer(Player::Player* player, std::string position, bool force = true) {
+        if (!isInRoster(player)) {
+            return false;
+        }
+        if (!canPlace(player, position)) {
+            return false;
+        }
+        if (playerPlacement[position].count(player)) {
             return true;
         }
-        if (sgRoster.count(athlete)) {
-            sgRoster.erase(athlete);
+        if (!force && playerPlacement[position].size() >= positionQuota[position]) {
+            return false;
+        }
+        // can place
+        // remove from other positions
+        dropFromEverySpot(player);
+        // remove one player of this position if full
+        if (playerPlacement[position].size() >= positionQuota[position]) {
+            addToBench(*playerPlacement[position].begin());
+        }
+        // add to this position
+        playerPlacement[position].insert(player);
+        return true;
+    }
+
+    bool Roster::swapPlayerPlacement(Player::Player* playerReplacer, Player::Player* playerReplacee, bool force = true) {
+
+        if (!isInRoster(playerReplacer) || !isInRoster(playerReplacee)) {
+            return false;
+        }
+
+        // find position placement of player
+        std::string targetPosition, originPosition;
+        for (auto& [position, positionSpot]: playerPlacement) {
+            if (positionSpot.count(playerReplacee)) {
+                targetPosition = position; 
+            }
+            if (positionSpot.count(playerReplacer)) {
+                originPosition = position;
+            }
+        }
+        
+        if (targetPosition == originPosition) {
             return true;
         }
-        if (gRoster.count(athlete)) {
-            gRoster.erase(athlete);
-            return true;
+        
+        // check player avaiblility to play in that position
+        if (!canPlace(playerReplacer, targetPosition)) {
+            return false;
         }
-        if (sfRoster.count(athlete)) {
-            sfRoster.erase(athlete);
-            return true;
+
+        if (!force && !canPlace(playerReplacee, originPosition)) {
+            return false;
         }
-        if (pfRoster.count(athlete)) {
-            pfRoster.erase(athlete);
-            return true;
+
+        if (!canPlace(playerReplacee, originPosition)) {
+            addToBench(playerReplacee);
+        } else {
+            playerPlacement[originPosition].insert(playerReplacee);
+            playerPlacement[targetPosition].erase(playerReplacee);
         }
-        if (fRoster.count(athlete)) {
-            fRoster.erase(athlete);
-            return true;
+
+        playerPlacement[targetPosition].insert(playerReplacer);
+        playerPlacement[originPosition].erase(playerReplacer);
+        
+        return true;
+
+    }
+
+    bool Roster::dropFromEverySpot(Player::Player* player) {
+        bool res = false;
+        
+        for (auto& [_, pp] : playerPlacement) {
+            if (pp.count(player)) {
+                pp.erase(player);
+                res = true;
+            }
         }
-        if (utilRoster.count(athlete)) {
-            utilRoster.erase(athlete);
-            return true;
+        
+        return res;
+    }
+
+    bool canPlace(Player::Player* player, std::string position) {
+        
+        std::unordered_set<std::string> availability {"BN", "UTIL"};
+
+        // aviable positions
+        for (auto& playerPosition: player->getPositions()) {
+            availability.insert(playerPosition);
+            if (playerPosition == "PG" || playerPosition == "SG") {
+                availability.insert("G");
+            }
+            if (playerPosition == "SF" || playerPosition == "PF") {
+                availability.insert("F");
+            }
         }
-        if (bench.count(athlete)) {
-            bench.erase(athlete);
-            return true;
+        
+        return (bool) availability.count(position);
+    }
+
+    int Roster::getTotalLimit() {
+        int limit = 0;
+        for (auto& [_, pq] : positionQuota) {
+            limit += pq;
         }
-        return false;
+        return limit;
+    }
+
+    int Roster::getTotalPlayer() {
+        int players = 0;
+        for (auto& [_, pp] : playerPlacement) {
+            players += pp.size();
+        }
+        return players;
     }
 
 }

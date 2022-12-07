@@ -11,7 +11,7 @@ clang++ -std=c++2a -stdlib=libc++ -fimplicit-modules -fimplicit-module-maps -fpr
 clang++ -std=c++2a -c player.cpp -stdlib=libc++ -fmodules -fbuiltin-module-map -fmodules-ts -Xclang -emit-module-interface -o player.pcm
 
 
-clang++ test.cpp athlete.cpp gamelog.cpp league.cpp team.cpp roster.cpp -std=c++20
+clang++ -std=c++20 *.cpp
 
 
 ```

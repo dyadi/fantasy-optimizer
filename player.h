@@ -1,5 +1,5 @@
-#ifndef ATHLETE_H
-#define ATHLETE_H
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <vector>
 #include <string>
@@ -9,18 +9,20 @@
 
 #include "gamelog.h"
 
-namespace Athlete {
+namespace Player {
     
-    class Athlete {
+    class Player {
 
         public:
-            Athlete();
+            Player();
 
-            Athlete(std::string, std::string);
+            Player(std::string, std::string);
 
             void showInfo();
 
             void addPosition(std::string);
+
+            std::unordered_set<std::string> getPositions();
 
             void addGameLog(std::chrono::sys_days, GameLog::GameLog);
 
@@ -31,8 +33,8 @@ namespace Athlete {
             // getWeekGameLog();
 
         private:
-            std::string palyer_id;
-            std::string palyer_name;
+            std::string playerId;
+            std::string playerName;
             std::unordered_set<std::string> positions;
             std::map<std::chrono::sys_days, GameLog::GameLog> date2gamelog;
 

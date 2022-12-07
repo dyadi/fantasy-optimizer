@@ -7,7 +7,7 @@
 #include <variant>
 #include <map>
 
-#include "athlete.h"
+#include "player.h"
 #include "roster.h"
 
 namespace Team {
@@ -17,8 +17,8 @@ namespace Team {
         public:
             Team(std::string);
             std::string getName();
-            bool addAthlete(std::chrono::sys_days, Athlete::Athlete*);
-            bool dropAthlete(std::chrono::sys_days, Athlete::Athlete*);
+            bool addPlayer(std::chrono::sys_days, Player::Player*);
+            bool dropPlayer(std::chrono::sys_days, Player::Player*);
 
         private:
             std::string teamName;

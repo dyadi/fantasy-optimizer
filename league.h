@@ -7,7 +7,7 @@
 #include <chrono>
 #include <map>
 
-#include "athlete.h"
+#include "player.h"
 #include "team.h"
 
 namespace League {
@@ -21,16 +21,16 @@ namespace League {
             void addTeam(std::string);
             void showTeams();
             void showTeamPlayers(int);
-            void teamAddAthlete(int, std::string);
+            void teamAddPlayer(int, std::string);
 
-            void showAthlete(std::string);
+            void showPlayer(std::string);
 
-            int getAthleteCnt();
+            int getPlayerCnt();
 
         private:
             // call by constructor, load data
             // std::vector<Player> player_list;
-            std::unordered_map<std::string, Athlete::Athlete> idToAthlete;
+            std::unordered_map<std::string, Player::Player> idToPlayer;
             std::unordered_map<std::string, int> idToTeamNumber;
             std::vector<Team::Team> teamList;
             std::chrono::sys_days currDate;

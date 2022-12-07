@@ -10,28 +10,28 @@ namespace Team {
         return teamName;
     }
 
-    bool Team::addAthlete(std::chrono::sys_days date, Athlete::Athlete* athlete) {
+    bool Team::addPlayer(std::chrono::sys_days date, Player::Player* player) {
         
         if (!dailyRoster.count(date)){
             Roster::Roster newRoster;
             dailyRoster[date] = newRoster;
         }
         
-        if (dailyRoster[date].isInRoster(athlete)) {
+        if (dailyRoster[date].isInRoster(player)) {
             return false;
         }
         
-        return dailyRoster[date].addToBench(athlete);
+        return dailyRoster[date].addToBench(player);
     }
 
-    bool Team::dropAthlete(std::chrono::sys_days date, Athlete::Athlete* athlete) {
+    bool Team::dropPlayer(std::chrono::sys_days date, Player::Player* player) {
         
         if (!dailyRoster.count(date)){
             std::cout << "Can't drop aththlete, no roster in that date." << std::endl;
             return false;
         }
 
-        return dailyRoster[date].dropFromEverySpot(athlete);
+        return dailyRoster[date].dropFromEverySpot(player);
 
     }
 
