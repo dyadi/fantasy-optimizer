@@ -21,6 +21,7 @@ namespace GameLog {
 
             void showGameLog();
 
+            void clear();
 
         private:
             int fg;
@@ -38,6 +39,9 @@ namespace GameLog {
             int blk;
             int tov;
             int pf;
+
+            // std::unordered_map<std::string, int> coreStats;
+            // std::string coreStatsTitle[13] = {"fg", "fga", "fg3", "fg3a", "ft", "fta", "orb", "drb", "ast", "stl", "blk", "tov", "pf"}
 
     };
 }

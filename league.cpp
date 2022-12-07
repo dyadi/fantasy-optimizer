@@ -16,13 +16,21 @@
 namespace League {
 
     League::League(std::string dateString) {
+        // input string format: YYYY-MM-DD
         std::istringstream iss {dateString};
         std::chrono::sys_days tp;
         iss >> date::parse("%F", tp);
         currDate = tp;
+
+        setCategory(std::unordered_set<std::string> {"fgpct", "ftpct", "3pm", "pts", "trb", "ast", "stl", "blk", "tov"});
+
+    }
+
+    League::League(std::chrono::sys_days currDate) : currDate(currDate) {
+        setCategory(std::unordered_set<std::string> {"fgpct", "ftpct", "3pm", "pts", "trb", "ast", "stl", "blk", "tov"});
     }
     
-    League::League(std::chrono::sys_days currDate) : currDate(currDate) {}
+    // League::League(std::chrono::sys_days currDate) : currDate(currDate) {}
 
     void League::showPlayer(std::string player_id) {
         
@@ -38,7 +46,6 @@ namespace League {
     }
     
     int League::getPlayerCnt() {
-
         return idToPlayer.size();
 
     }
@@ -55,11 +62,15 @@ namespace League {
     }
 
     void League::showTeamPlayers(int teamNo) {
+
+        std::cout << "-----idToTeamNumber-----" << std::endl;
         for (auto& [playerId, playerTeamNo]:idToTeamNumber) {
             if (playerTeamNo == teamNo){
                 std::cout << playerId << std::endl;
             }
         }
+        teamList[teamNo].getRoster(currDate).showRoster();
+        std::cout << std::endl;
     }
 
     void League::teamAddPlayer(int teamNo, std::string playerId){
@@ -83,6 +94,29 @@ namespace League {
             idToTeamNumber[playerId] = teamNo;
         }
         
+    }
+
+    bool League::teamPlacePlayer(int teamNo, std::string playerId, std::string position, bool force = true){
+        return teamList[teamNo].placePlayerToDate(currDate, &idToPlayer[playerId], position, force);
+    }
+
+    bool League::teamSwapPlayerPlacement(int teamNo, std::string playerReplacerId, std::string playerReplaceeI, bool force = true){
+        return teamList[teamNo].swapPlayerPlacementToDate(currDate, &idToPlayer[playerReplacerId], &idToPlayer[playerReplaceeI], force);
+    }
+
+    void League::setCategory(std::unordered_set<std::string> customCategories) {
+        
+        for (auto& cat : categoryKey) {
+            categories[cat] = false;
+        }
+
+        for (auto& cat : customCategories) {
+            if (categories.count(cat)) {
+                categories[cat] = true;
+            } else {
+                std::cout << "Category " << cat << " is not allowed." << std::endl;
+            }
+        }
     }
 
     void League::loadData() {

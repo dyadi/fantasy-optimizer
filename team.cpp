@@ -35,4 +35,30 @@ namespace Team {
 
     }
 
+    bool Team::placePlayerToDate(std::chrono::sys_days date, Player::Player* player, std::string position, bool force = true) {
+        return dailyRoster[date].placePlayer(player, position, force);
+    }
+    
+    bool Team::swapPlayerPlacementToDate(std::chrono::sys_days date, Player::Player* playerReplacer, Player::Player* playerReplacee, bool force = true) {
+        return dailyRoster[date].swapPlayerPlacement(playerReplacer, playerReplacee, force);
+    }
+
+
+    Roster::Roster& Team::getRoster(std::chrono::sys_days date){
+        return dailyRoster[date];
+    }
+
+    GameLog::GameLog Team::getDailySum(std::chrono::sys_days date){
+        return dailyRoster[date].getSum(date);
+    }
+
+    bool Team::copyRoster(std::chrono::sys_days toDate, std::chrono::sys_days fromDate){
+        if (!dailyRoster.count(fromDate)) {
+            std::cout << "can't copy from a date not in dailyRoster" << std::endl;
+            return false;
+        }
+        dailyRoster[toDate] = dailyRoster[fromDate];
+        return true;
+    }
+
 }

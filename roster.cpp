@@ -2,7 +2,16 @@
 
 namespace Roster {
 
-    Roster::Roster() {}
+    Roster::Roster() {
+        
+        int defaultArgs[9] {3, 1, 1, 1, 1, 2, 1, 1, 2};
+
+        for (int i = 0; i < 9; ++i){
+            playerPlacement[positionTitle[i]] = std::unordered_set<Player::Player*>();
+            positionQuota[positionTitle[i]] = defaultArgs[i];
+        }
+        
+    }
 
     Roster::Roster(int benchSpot, int pgLimit, int sgLimit, int sfLimit, int pfLimit, int cLimit, int gLimit, int fLimit, int utilLimit) {
                         
@@ -128,7 +137,7 @@ namespace Roster {
         return res;
     }
 
-    bool canPlace(Player::Player* player, std::string position) {
+    bool Roster::canPlace(Player::Player* player, std::string position) {
         
         std::unordered_set<std::string> availability {"BN", "UTIL"};
 
@@ -141,6 +150,10 @@ namespace Roster {
             if (playerPosition == "SF" || playerPosition == "PF") {
                 availability.insert("F");
             }
+        }
+
+        if (!availability.count(position)) {
+            std::cout << "Can't place in such position." << std::endl;
         }
         
         return (bool) availability.count(position);
@@ -160,6 +173,30 @@ namespace Roster {
             players += pp.size();
         }
         return players;
+    }
+
+    void Roster::showRoster() {
+        std::cout << "==========Show=Roster==========" << std::endl;
+        for (auto&[pos, playerSet]:playerPlacement) {
+            for (auto player:playerSet) {
+                std::cout << pos << "\t" << player->getInfo()["playerName"] << std::endl;
+            }
+        }
+        std::cout << std::endl;
+    }
+
+    GameLog::GameLog Roster::getSum(std::chrono::sys_days date) {
+        GameLog::GameLog gamelog;
+        
+        for (auto& [key, placement] : playerPlacement) {
+            if (key != "BN") {
+                for (auto& player : placement) {
+                    gamelog += player->getGameLog(date);
+                }
+            }
+        }
+
+        return gamelog;
     }
 
 }

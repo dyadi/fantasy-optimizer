@@ -3,12 +3,19 @@
 
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <string>
 #include <chrono>
 #include <map>
 
 #include "player.h"
 #include "team.h"
+
+// #include "match.h"
+
+namespace Match {
+    class Match;
+}
 
 namespace League {
 
@@ -17,13 +24,16 @@ namespace League {
             League(std::string);
             League(std::chrono::sys_days);
             void loadData();
-
             void addTeam(std::string);
             void showTeams();
             void showTeamPlayers(int);
             void teamAddPlayer(int, std::string);
+            bool teamPlacePlayer(int, std::string, std::string, bool);
+            bool teamSwapPlayerPlacement(int, std::string, std::string, bool);
 
             void showPlayer(std::string);
+            void setCategory(std::unordered_set<std::string>);
+            
 
             int getPlayerCnt();
 
@@ -34,9 +44,13 @@ namespace League {
             std::unordered_map<std::string, int> idToTeamNumber;
             std::vector<Team::Team> teamList;
             std::chrono::sys_days currDate;
+            std::unordered_map<std::string, bool> categories;
+            std::string categoryKey[16] {"fgm", "fgpct", "ftm", "ftpct", "3pm", "3pmpct", "pts", "astor", "drb", "orb", "trb", "ast", "stl", "blk", "tov", "dd"};
 
             int weeklyBudget;
             
+        friend class Match::Match;
+        
     };
 }
 

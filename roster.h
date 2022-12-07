@@ -2,10 +2,12 @@
 #define ROSTER_H
 
 #include <iostream>
+#include <string>
 #include <unordered_set>
 #include <unordered_map>
 
 #include "player.h"
+#include "gamelog.h"
 
 namespace Roster {
     
@@ -23,6 +25,8 @@ namespace Roster {
             bool canPlace(Player::Player*, std::string);
             int getTotalLimit();
             int getTotalPlayer();
+            void showRoster();
+            GameLog::GameLog getSum(std::chrono::sys_days);
 
         private:
             // std::unordered_set<Player::Player*> pgRoster;

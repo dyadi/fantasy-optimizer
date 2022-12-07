@@ -6,6 +6,7 @@
 #include <chrono>
 #include <map>
 #include <unordered_set>
+#include <unordered_map>
 
 #include "gamelog.h"
 
@@ -20,17 +21,17 @@ namespace Player {
 
             void showInfo();
 
+            std::unordered_map<std::string, std::string> getInfo();
+
             void addPosition(std::string);
 
             std::unordered_set<std::string> getPositions();
 
             void addGameLog(std::chrono::sys_days, GameLog::GameLog);
 
+            GameLog::GameLog getGameLog(std::chrono::sys_days);
+
             int getGameLogSize();
-
-            // getAccGameLog();
-
-            // getWeekGameLog();
 
         private:
             std::string playerId;

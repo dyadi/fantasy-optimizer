@@ -10,6 +10,12 @@
 #include "player.h"
 #include "roster.h"
 
+// #include "match.h"
+
+namespace Match {
+    class Match;
+}
+
 namespace Team {
 
     class Team {
@@ -17,12 +23,24 @@ namespace Team {
         public:
             Team(std::string);
             std::string getName();
+            
             bool addPlayer(std::chrono::sys_days, Player::Player*);
             bool dropPlayer(std::chrono::sys_days, Player::Player*);
+
+            bool placePlayerToDate(std::chrono::sys_days, Player::Player*, std::string, bool);
+            bool swapPlayerPlacementToDate(std::chrono::sys_days, Player::Player*, Player::Player*, bool);
+
+            Roster::Roster& getRoster(std::chrono::sys_days);
+            GameLog::GameLog getDailySum(std::chrono::sys_days);
+
+            bool copyRoster(std::chrono::sys_days, std::chrono::sys_days);
+
 
         private:
             std::string teamName;
             std::map<std::chrono::sys_days, Roster::Roster> dailyRoster;
+
+        friend class Match::Match;
 
     };
 }

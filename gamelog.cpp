@@ -98,4 +98,19 @@ namespace GameLog {
         std::cout << fg << "\t" <<  fga << "\t" <<  fg3 << "\t" <<  fg3a << "\t" <<  ft << "\t" <<  fta << "\t" <<  orb << "\t" <<  drb << "\t" <<  ast << "\t" <<  stl << "\t" <<  blk << "\t" <<  tov << "\t" <<  pf << std::endl;
     }
 
+    void GameLog::clear(){
+            fg = 0;
+            fga = 0;
+            fg3 = 0;
+            fg3a = 0;
+            ft = 0;
+            fta = 0;
+            orb = 0;
+            drb = 0;
+            ast = 0;
+            stl = 0;
+            blk = 0;
+            tov = 0;
+            pf = 0;
+    }
 }
