@@ -24,7 +24,7 @@ namespace Match {
             bool simulate();
             bool simulate(std::map<std::chrono::sys_days, Roster::Roster>);
             void showResults();
-            void createWeekRosterBaseOnModay();
+            void createWeekRosterBaseOnMonday();
             void applyOptimizer(std::chrono::sys_days, Optimizer::BaseOptimizer*);
 
         private:

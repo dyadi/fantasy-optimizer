@@ -1,5 +1,10 @@
 #include "optimizer.h"
 
+#include "utils/date.h"
+
+using date::operator<<;
+
+
 namespace Optimizer {
 
     BaseOptimizer::BaseOptimizer() {}
@@ -9,22 +14,22 @@ namespace Optimizer {
     }
 
     std::map<std::chrono::sys_days, Roster::Roster> StupidOptimizer::StupidOptimizer::getOptimalRoster(std::chrono::sys_days startDate) {
-        
+    
+
         std::chrono::sys_days monday = startDate - (date::weekday{startDate} - date::Monday);
         std::chrono::sys_days sunday = monday + std::chrono::days{6};
 
+
         // generate stupid player placement
         Roster::Roster stupidPlacement = match->myTeam->dailyRoster[startDate];
-        match->myTeam->dailyRoster[startDate].showRoster();
         std::cout << "Size is " << match->myTeam->dailyRoster[startDate].playerPlacement["BN"].size() << std::endl;
         for (auto& player : match->myTeam->dailyRoster[startDate].playerPlacement["BN"]) {
-            std::cout << "hihihhih" << std::endl;
             for (auto& pos : stupidPlacement.positionTitle) {
-                std::cout << "pos is " << pos << std::endl;
+                if (pos == "BN") {
+                    continue;
+                }
                 auto res = stupidPlacement.placePlayer(player, pos, false);
-                std::cout << "res is " << res << std::endl;
                 if (stupidPlacement.placePlayer(player, pos, false)) {
-                    std::cout << "Placed: " << player->getInfo()["playerId"] << std::endl;
                     break;
                 }
             }

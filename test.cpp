@@ -12,7 +12,7 @@ int main() {
 
     std::string currTime = "2022-10-24";
 
-    std::istringstream iss {"2020-10-24"};
+    std::istringstream iss {"2022-10-24"};
     std::chrono::sys_days theDayPoint;
     iss >> date::parse("%F", theDayPoint);
     
@@ -64,8 +64,7 @@ int main() {
 
     Match::Match newMatch("fff321755", "dyadi", &testLeague);
     
-
-    newMatch.createWeekRosterBaseOnModay();
+    newMatch.createWeekRosterBaseOnMonday();
     newMatch.simulate();
     newMatch.showResults();
 

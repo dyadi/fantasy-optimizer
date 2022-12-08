@@ -21,13 +21,14 @@ namespace Roster {
         public:
             Roster();
             Roster(int, int, int, int, int, int, int, int, int);
-            Roster(const Roster&);
+            // Roster(const Roster&) = default;
             bool isInRoster(Player::Player*);
             bool addToBench(Player::Player*);
             bool placePlayer(Player::Player*, std::string, bool);
             bool swapPlayerPlacement(Player::Player*, Player::Player*, bool);
             bool setPlayerPlacement(std::unordered_map<std::string, std::unordered_set<Player::Player*>>);
             bool dropFromEverySpot(Player::Player*);
+            void dropAll();
             bool canPlace(Player::Player*, std::string);
             int getTotalLimit();
             int getTotalPlayer();

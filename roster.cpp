@@ -24,13 +24,11 @@ namespace Roster {
         
     }
 
-    Roster::Roster(const Roster& rhs) {
-        playerPlacement = rhs.playerPlacement;
-        positionQuota = rhs.positionQuota;
-        // for (int i = 0; i < 9; ++i){
-        //     positionTitle[i] = rhs.positionTitle[i];
-        // }
-    }
+    // Roster::Roster(const Roster& rhs) {
+    //     playerPlacement = rhs.playerPlacement;
+    //     positionQuota = rhs.positionQuota;
+    //     positionTitle = rhs.positionTitle;
+    // }
 
     bool Roster::isInRoster(Player::Player* player) {
         for (auto& [_, pp] : playerPlacement) {
@@ -172,7 +170,7 @@ namespace Roster {
 
     bool Roster::dropFromEverySpot(Player::Player* player) {
         bool res = false;
-        
+
         for (auto& [_, pp] : playerPlacement) {
             if (pp.count(player)) {
                 pp.erase(player);
@@ -181,6 +179,21 @@ namespace Roster {
         }
         
         return res;
+    }
+
+    void Roster::dropAll() {
+        int cnt = 0;
+        for (auto& [_, pp] : playerPlacement) {
+            std::unordered_set<Player::Player*> dropCantidate;
+            for (auto& p: pp) {
+                dropCantidate.insert(p);
+            }
+            for (auto& p: dropCantidate) {
+                pp.erase(p);
+                ++ cnt;
+            }
+        }
+        std::cout << "Drop All: " << cnt << std::endl;
     }
 
     bool Roster::canPlace(Player::Player* player, std::string position) {

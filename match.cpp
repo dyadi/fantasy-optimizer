@@ -33,7 +33,7 @@ namespace Match {
 
     }
 
-    void Match::createWeekRosterBaseOnModay() {
+    void Match::createWeekRosterBaseOnMonday() {
 
         std::chrono::sys_days monday = league->currDate - (date::weekday{league->currDate} - date::Monday);
         std::chrono::sys_days sunday = monday + std::chrono::days{6};

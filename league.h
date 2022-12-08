@@ -49,7 +49,7 @@ namespace League {
             std::vector<Team::Team> teamList;
             std::chrono::sys_days currDate;
             std::unordered_map<std::string, bool> categories;
-            std::string categoryKey[16] {"fgm", "fgpct", "ftm", "ftpct", "3pm", "3pmpct", "pts", "astor", "drb", "orb", "trb", "ast", "stl", "blk", "tov", "dd"};
+            std::vector<std::string> categoryKey {"fgm", "fgpct", "ftm", "ftpct", "3pm", "3pmpct", "pts", "astor", "drb", "orb", "trb", "ast", "stl", "blk", "tov", "dd"};
 
             int weeklyBudget;
             
