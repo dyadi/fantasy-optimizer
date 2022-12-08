@@ -5,6 +5,9 @@
 
 #include "optimizer.h"
 
+
+using date::operator<<;
+
 namespace Match {
 
     Match::Match(Team::Team* myTeam, Team::Team* oppoTeam, League::League* league) : myTeam(myTeam), oppoTeam(oppoTeam), league(league) {}
@@ -34,13 +37,6 @@ namespace Match {
             }
         }
 
-        // std::cout << "My team:" << myTeam->getName() << std::endl;
-        // // myResult.showGameLog();
-        
-        // std::cout << "Opponent team:" << oppoTeam->getName() << std::endl;
-        // oppoResult.showGameLog();
-
-        //To do, show score and winner
 
     }
 
@@ -83,28 +79,36 @@ namespace Match {
 
     }
 
-    bool Match::simulate(std::map<std::chrono::sys_days, Roster::Roster> optimalRoster) {
+    bool Match::simulate(std::map<std::chrono::sys_days, Roster::Roster> optimalRoster, Team::Team* team) {
         
         std::chrono::sys_days monday = league->currDate - (date::weekday{league->currDate} - date::Monday);
         std::chrono::sys_days sunday = monday + std::chrono::days{6};
 
         // ensure every day has a roster
         for (auto currDay = monday; currDay <= sunday; currDay += std::chrono::days{1}) {
-            if (!optimalRoster.count(currDay) || !oppoTeam->dailyRoster.count(currDay)) {
+            if (!optimalRoster.count(currDay)) {
                 return false;
             }
         }
 
-        myResult.clear();
-        oppoResult.clear();
-
-        // sum up everdays stats
-        for (auto currDay = monday; currDay <= sunday; currDay += std::chrono::days{1}) {
-            myResult += optimalRoster[currDay].getSum(currDay);
-            oppoResult += oppoTeam->getDailySum(currDay);
+        if(team->getName() == myTeam->getName()) {
+            myResult.clear();
+            for (auto currDay = monday; currDay <= sunday; currDay += std::chrono::days{1}) {
+                myResult += optimalRoster[currDay].getSum(currDay);
+        
+            }
         }
 
-        // showResults();
+        if (team->getName() == oppoTeam->getName()) {
+            oppoResult.clear();
+            for (auto currDay = monday; currDay <= sunday; currDay += std::chrono::days{1}) {
+                oppoResult += optimalRoster[currDay].getSum(currDay);
+            }
+        }
+
+        if (team->getName() != myTeam->getName() && team->getName() != oppoTeam->getName()) {
+            return false;
+        }
         
         return true;
 
@@ -112,11 +116,18 @@ namespace Match {
 
     void Match::applyOptimizer(std::chrono::sys_days startDate, Optimizer::BaseOptimizer* optimizer) {
 
-        auto result = optimizer->getOptimalRoster(startDate);
-        for (auto& [dt, ros]: result) {
+        auto myResult = optimizer->getOptimalRoster(startDate, myTeam);
+        auto oppoResult = optimizer->getOptimalRoster(startDate, oppoTeam);
+        for (auto& [dt, ros]: myResult) {
+            std::cout << dt;
             ros.showRoster();
         }
-        simulate(result);
+        for (auto& [dt, ros]: oppoResult) {
+            std::cout << dt;
+            ros.showRoster();
+        }
+        simulate(myResult, myTeam);
+        simulate(oppoResult, oppoTeam);
 
     }
 

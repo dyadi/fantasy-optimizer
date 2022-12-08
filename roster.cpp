@@ -216,7 +216,7 @@ namespace Roster {
         }
 
         if (!availability.count(position)) {
-            std::cout << "Can't place in such position." << std::endl;
+            // std::cout << "Can't place in such position." << std::endl;
         }
         
         return (bool) availability.count(position);
@@ -240,6 +240,13 @@ namespace Roster {
 
     void Roster::showRoster() {
         std::cout << "==========Show=Roster==========" << std::endl;
+
+        // std::map<std::string, std::unordered_set<Player::Player*>> orderedplayerPlacement;
+
+        // for (auto&[pos, playerSet]:playerPlacement) {
+        //     orderedplayerPlacement[pos] = playerSet;
+        // }
+
         for (auto&[pos, playerSet]:playerPlacement) {
             for (auto player:playerSet) {
                 std::cout << pos << "\t" << player->getInfo()["playerName"] << std::endl;

@@ -23,7 +23,7 @@ namespace Match {
             Match(std::string, std::string, League::League*);
 
             bool simulate();
-            bool simulate(std::map<std::chrono::sys_days, Roster::Roster>);
+            bool simulate(std::map<std::chrono::sys_days, Roster::Roster>, Team::Team*);
             void showResults();
             void createWeekRosterBaseOnMonday();
             void applyOptimizer(std::chrono::sys_days, Optimizer::BaseOptimizer*);

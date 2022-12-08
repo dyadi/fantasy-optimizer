@@ -16,7 +16,7 @@ namespace Optimizer {
 
         public:
             BaseOptimizer();
-            virtual std::map<std::chrono::sys_days, Roster::Roster> getOptimalRoster(std::chrono::sys_days) = 0;
+            virtual std::map<std::chrono::sys_days, Roster::Roster> getOptimalRoster(std::chrono::sys_days, Team::Team*) = 0;
 
         protected:
             Match::Match* match;    
@@ -27,7 +27,7 @@ namespace Optimizer {
 
         public:
             StupidOptimizer(Match::Match*);
-            std::map<std::chrono::sys_days, Roster::Roster> getOptimalRoster(std::chrono::sys_days);
+            std::map<std::chrono::sys_days, Roster::Roster> getOptimalRoster(std::chrono::sys_days, Team::Team*);
 
     };
 
@@ -35,7 +35,7 @@ namespace Optimizer {
 
         public:
             GreedyOptimizer(Match::Match*);
-            std::map<std::chrono::sys_days, Roster::Roster> getOptimalRoster(std::chrono::sys_days);
+            std::map<std::chrono::sys_days, Roster::Roster> getOptimalRoster(std::chrono::sys_days, Team::Team*);
 
     };
 

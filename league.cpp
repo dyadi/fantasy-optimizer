@@ -24,10 +24,13 @@ namespace League {
 
         setCategory(std::unordered_set<std::string> {"fgpct", "ftpct", "3pm", "pts", "trb", "ast", "stl", "blk", "tov"});
 
+        loadData();
+
     }
 
     League::League(std::chrono::sys_days currDate) : currDate(currDate) {
         setCategory(std::unordered_set<std::string> {"fgpct", "ftpct", "3pm", "pts", "trb", "ast", "stl", "blk", "tov"});
+        loadData();
     }
     
     // League::League(std::chrono::sys_days currDate) : currDate(currDate) {}
@@ -62,11 +65,12 @@ namespace League {
     }
 
     void League::showTeamPlayers(int teamNo) {
-
+        
+        std::cout << "\n==========ShowTeam:"<< teamNo <<"==========" << std::endl;
         std::cout << "-----idToTeamNumber-----" << std::endl;
         for (auto& [playerId, playerTeamNo]:idToTeamNumber) {
             if (playerTeamNo == teamNo){
-                std::cout << playerId << std::endl;
+                std::cout << playerId << "\t" << idToPlayer[playerId].getInfo()["playerName"] << std::endl;
             }
         }
         teamList[teamNo].getRoster(currDate).showRoster();
@@ -205,7 +209,7 @@ namespace League {
                 Player::Player newPlayer(player_id, parsed_line["player"]);
                 idToPlayer[player_id] = newPlayer;
                 idToTeamNumber[player_id] = -1;
-                std::cout << "New Player\t" << parsed_line["player"] << "\t" << parsed_line["player_id"] << std::endl;
+                // std::cout << "New Player\t" << parsed_line["player"] << "\t" << parsed_line["player_id"] << std::endl;
             }
 
             // Add GameLog
