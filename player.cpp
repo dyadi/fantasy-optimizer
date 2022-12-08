@@ -3,6 +3,8 @@
 #include "player.h"
 #include "utils/date.h"
 
+using date::operator<<;
+
 namespace Player {
     
     Player::Player() {}
@@ -19,7 +21,7 @@ namespace Player {
         }
         std::cout << "\n";
 
-        std::cout << "GameLog Length\t" << date2gamelog.size() << "\n";
+        std::cout << "GameLog Length\t" << dateToGameLog.size() << "\n";
 
         std::cout << std::endl;
 
@@ -39,27 +41,30 @@ namespace Player {
 
     void Player::addGameLog(std::chrono::sys_days date, GameLog::GameLog gamelog) {
 
-        // if(player_id == "bridgmi01" && date2gamelog.count(date)){
+        // if(player_id == "bridgmi01" && dateToGameLog.count(date)){
         //     std::cout << "already in" << player_id << std::endl;
-        //     date2gamelog[date].showGameLog();
+        //     dateToGameLog[date].showGameLog();
         //     gamelog.showGameLog();
-        //     std::cout << player_id << " game played " << date2gamelog.size() << std::endl;
+        //     std::cout << player_id << " game played " << dateToGameLog.size() << std::endl;
         //     throw 50;
         // }
 
-        date2gamelog[date] = gamelog;
+        dateToGameLog[date] = gamelog;
         // if (player_id == "bridgmi01") {
-        //     std::cout << player_id << " game played " << date2gamelog.size() << std::endl;
+        //     std::cout << player_id << " game played " << dateToGameLog.size() << std::endl;
         // }
         
     }
 
     GameLog::GameLog Player::getGameLog(std::chrono::sys_days date) {
-        return date2gamelog[date];
+        if (!dateToGameLog.count(date)) {
+            throw 1;
+        }
+        return dateToGameLog[date];
     }
 
     int Player::getGameLogSize(){
-        return date2gamelog.size();
+        return dateToGameLog.size();
     }
 
     void Player::updateAvgStats(){
@@ -67,11 +72,11 @@ namespace Player {
         int gameCnt = getGameLogSize();
 
         GameLog::GameLog sumGameLog;
-        for (auto& [_, gl] : date2gamelog) {
+        for (auto& [_, gl] : dateToGameLog) {
             sumGameLog += gl;
         }
 
-        auto avgStats = sumGameLog.getStats();
+        avgStats = sumGameLog.getStats();
 
         for (auto& [cat, val] : avgStats) {
             if (cat == "fgpct" || cat == "ftpct" || cat == "3ppct" || cat == "astovr") {
@@ -85,6 +90,15 @@ namespace Player {
                             avgStats["dd"] + avgStats["fgm"] - 1.5*(1/(avgStats["fgpct"]/avgStats["fgm"]-avgStats["fgm"])) - 
                             0.5*(1/(avgStats["ftpct"]/avgStats["ftm"]-avgStats["ftm"])) + 2*avgStats["3pm"];
 
+    }
+
+    std::unordered_map<std::string, double> Player::getAvgStats() {
+        return avgStats;
+    }
+    
+
+    bool Player::willPlay(std::chrono::sys_days date) {
+        return (bool) dateToGameLog.count(date);
     }
 
 }

@@ -1,5 +1,6 @@
 #include "match.h"
 
+#include <iomanip>
 #include "utils/date.h"
 
 #include "optimizer.h"
@@ -22,12 +23,22 @@ namespace Match {
     }
 
     void Match::showResults() {
+        auto myFinalStats = myResult.getStats();
+        auto oppoFinalStats = oppoResult.getStats();
+
+        std::cout << "===Match=Show=Result===" << std::endl;
+        std::cout << "\t" << myTeam->getName() << "\t" << oppoTeam->getName() << std::endl;
+        for (auto& [cat, _]:myFinalStats) {
+            if (league->categories[cat]) {
+                std::cout << std::setprecision(4) << cat << "\t" << myFinalStats[cat] << "\t\t" << oppoFinalStats[cat] << std::endl;
+            }
+        }
+
+        // std::cout << "My team:" << myTeam->getName() << std::endl;
+        // // myResult.showGameLog();
         
-        std::cout << "My team:" << myTeam->getName() << std::endl;
-        myResult.showGameLog();
-        
-        std::cout << "Opponent team:" << oppoTeam->getName() << std::endl;
-        oppoResult.showGameLog();
+        // std::cout << "Opponent team:" << oppoTeam->getName() << std::endl;
+        // oppoResult.showGameLog();
 
         //To do, show score and winner
 

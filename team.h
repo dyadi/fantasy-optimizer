@@ -18,6 +18,7 @@ namespace Match {
 
 namespace Optimizer {
     class StupidOptimizer;
+    class GreedyOptimizer;
 }
 
 namespace Team {
@@ -48,6 +49,7 @@ namespace Team {
 
         friend class Match::Match;
         friend class Optimizer::StupidOptimizer;
+        friend class Optimizer::GreedyOptimizer;
 
     };
 }

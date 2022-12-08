@@ -2,9 +2,11 @@
 #define OPTIMIZER_H
 
 #include <map>
+#include <set>
 #include <chrono>
 #include "utils/date.h"
 
+#include "player.h"
 #include "match.h"
 #include "roster.h"
 
@@ -17,8 +19,7 @@ namespace Optimizer {
             virtual std::map<std::chrono::sys_days, Roster::Roster> getOptimalRoster(std::chrono::sys_days) = 0;
 
         protected:
-            Match::Match* match;
-            std::map<std::chrono::sys_days, Roster::Roster> optimalRoster;
+            Match::Match* match;    
 
     };
 
@@ -33,6 +34,7 @@ namespace Optimizer {
     class GreedyOptimizer : public BaseOptimizer {
 
         public:
+            GreedyOptimizer(Match::Match*);
             std::map<std::chrono::sys_days, Roster::Roster> getOptimalRoster(std::chrono::sys_days);
 
     };

@@ -34,6 +34,10 @@ namespace Player {
             int getGameLogSize();
 
             void updateAvgStats();
+            
+            std::unordered_map<std::string, double> getAvgStats();
+
+            bool willPlay(std::chrono::sys_days);
 
         private:
             std::string playerId;
@@ -41,7 +45,7 @@ namespace Player {
             std::unordered_map<std::string, double> avgStats;
 
             std::unordered_set<std::string> positions;
-            std::map<std::chrono::sys_days, GameLog::GameLog> date2gamelog;
+            std::map<std::chrono::sys_days, GameLog::GameLog> dateToGameLog;
             
 
     };

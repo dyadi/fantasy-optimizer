@@ -10,6 +10,7 @@
 namespace Optimizer {
     class BaseOptimizer;
     class StupidOptimizer;
+    class GreedyOptimizer;
 }
 
 namespace Match {
@@ -33,6 +34,7 @@ namespace Match {
             League::League* league;
 
         friend class Optimizer::StupidOptimizer;
+        friend class Optimizer::GreedyOptimizer;
 
     };
     

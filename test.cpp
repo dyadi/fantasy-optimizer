@@ -68,8 +68,14 @@ int main() {
     newMatch.simulate();
     newMatch.showResults();
 
+    std::cout << "StupidOptimizer\n\n";
     Optimizer::StupidOptimizer optimizer(&newMatch);
     newMatch.applyOptimizer(theDayPoint, &optimizer);
+    newMatch.showResults();
+
+    std::cout << "GreedyOptimizer\n\n";
+    Optimizer::GreedyOptimizer greedyOptimizer(&newMatch);
+    newMatch.applyOptimizer(theDayPoint, &greedyOptimizer);
     newMatch.showResults();
     
     return 0;

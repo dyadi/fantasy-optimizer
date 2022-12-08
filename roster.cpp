@@ -59,9 +59,20 @@ namespace Roster {
         
     }
 
+    void Roster::placeAllToBench() {
+        for (auto& [key, placement] : playerPlacement) {
+            if (key != "BN") {
+                for (auto player : placement) {
+                    playerPlacement["BN"].insert(player);
+                }
+                placement.clear();
+            }
+        }
+    }
+
     bool Roster::placePlayer(Player::Player* player, std::string position, bool force = true) {
 
-        std::cout << position << " <<<"<< std::endl;
+        // std::cout << position << " <<<"<< std::endl;
 
         if (position == "BN") {
             return addToBench(player);
@@ -184,14 +195,7 @@ namespace Roster {
     void Roster::dropAll() {
         int cnt = 0;
         for (auto& [_, pp] : playerPlacement) {
-            std::unordered_set<Player::Player*> dropCantidate;
-            for (auto& p: pp) {
-                dropCantidate.insert(p);
-            }
-            for (auto& p: dropCantidate) {
-                pp.erase(p);
-                ++ cnt;
-            }
+            pp.clear();
         }
         std::cout << "Drop All: " << cnt << std::endl;
     }
@@ -200,7 +204,7 @@ namespace Roster {
         
         std::unordered_set<std::string> availability {"BN", "UTIL"};
 
-        // aviable positions
+        // available positions
         for (auto& playerPosition: player->getPositions()) {
             availability.insert(playerPosition);
             if (playerPosition == "PG" || playerPosition == "SG") {
@@ -250,7 +254,9 @@ namespace Roster {
         for (auto& [key, placement] : playerPlacement) {
             if (key != "BN") {
                 for (auto& player : placement) {
-                    gamelog += player->getGameLog(date);
+                    if (player->willPlay(date)) {
+                        gamelog += player->getGameLog(date);
+                    }
                 }
             }
         }

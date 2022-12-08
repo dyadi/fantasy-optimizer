@@ -12,6 +12,7 @@
 
 namespace Optimizer {
     class StupidOptimizer;
+    class GreedyOptimizer;
 }
 
 namespace Roster {
@@ -24,6 +25,7 @@ namespace Roster {
             // Roster(const Roster&) = default;
             bool isInRoster(Player::Player*);
             bool addToBench(Player::Player*);
+            void placeAllToBench();
             bool placePlayer(Player::Player*, std::string, bool);
             bool swapPlayerPlacement(Player::Player*, Player::Player*, bool);
             bool setPlayerPlacement(std::unordered_map<std::string, std::unordered_set<Player::Player*>>);
@@ -61,6 +63,7 @@ namespace Roster {
             std::vector<std::string> positionTitle {"BN", "PG", "SG", "SF", "PF", "C", "G", "F", "UTIL"};
 
         friend class Optimizer::StupidOptimizer;
+        friend class Optimizer::GreedyOptimizer;
 
     };
 

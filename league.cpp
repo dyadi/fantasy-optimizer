@@ -280,6 +280,11 @@ namespace League {
 
         std::cout << "raw cnt:" << cnt << "\ngameLog cnt:" << sum << std::endl;
 
+        for(auto & [_, p] : idToPlayer) {
+            p.updateAvgStats();
+        }
+
+
         return;
     }
 
