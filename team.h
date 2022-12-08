@@ -29,6 +29,7 @@ namespace Team {
 
             bool placePlayerToDate(std::chrono::sys_days, Player::Player*, std::string, bool);
             bool swapPlayerPlacementToDate(std::chrono::sys_days, Player::Player*, Player::Player*, bool);
+            bool setPlayerPlacementToDate(std::chrono::sys_days, std::unordered_map<std::string, std::unordered_set<Player::Player*>>);
 
             Roster::Roster& getRoster(std::chrono::sys_days);
             GameLog::GameLog getDailySum(std::chrono::sys_days);

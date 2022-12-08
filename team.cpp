@@ -43,6 +43,9 @@ namespace Team {
         return dailyRoster[date].swapPlayerPlacement(playerReplacer, playerReplacee, force);
     }
 
+    bool Team::setPlayerPlacementToDate(std::chrono::sys_days date, std::unordered_map<std::string, std::unordered_set<Player::Player*>> newPlacement) {
+        return dailyRoster[date].setPlayerPlacement(newPlacement);
+    }
 
     Roster::Roster& Team::getRoster(std::chrono::sys_days date){
         return dailyRoster[date];

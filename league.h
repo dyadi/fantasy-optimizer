@@ -30,7 +30,7 @@ namespace League {
             void teamAddPlayer(int, std::string);
             bool teamPlacePlayer(int, std::string, std::string, bool);
             bool teamSwapPlayerPlacement(int, std::string, std::string, bool);
-
+            bool teamSetPlayerPlacement(int, std::unordered_map<std::string, std::unordered_set<std::string>>);
             void showPlayer(std::string);
             void setCategory(std::unordered_set<std::string>);
             

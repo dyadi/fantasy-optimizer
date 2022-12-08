@@ -21,6 +21,7 @@ namespace Roster {
             bool addToBench(Player::Player*);
             bool placePlayer(Player::Player*, std::string, bool);
             bool swapPlayerPlacement(Player::Player*, Player::Player*, bool);
+            bool setPlayerPlacement(std::unordered_map<std::string, std::unordered_set<Player::Player*>>);
             bool dropFromEverySpot(Player::Player*);
             bool canPlace(Player::Player*, std::string);
             int getTotalLimit();

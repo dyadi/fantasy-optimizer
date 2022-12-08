@@ -56,6 +56,13 @@ namespace Roster {
     }
 
     bool Roster::placePlayer(Player::Player* player, std::string position, bool force = true) {
+
+        std::cout << position << " <<<"<< std::endl;
+
+        if (position == "BN") {
+            return addToBench(player);
+        }
+
         if (!isInRoster(player)) {
             return false;
         }
@@ -119,6 +126,39 @@ namespace Roster {
 
         playerPlacement[targetPosition].insert(playerReplacer);
         playerPlacement[originPosition].erase(playerReplacer);
+        
+        return true;
+
+    }
+
+    bool Roster::setPlayerPlacement(std::unordered_map<std::string, std::unordered_set<Player::Player*>> newPlacement) {
+        
+        //check if avaible for placement
+        for (auto& [pos, playerSet] : newPlacement) {
+            if (pos == "BN") {
+                continue;
+            }
+            if (playerSet.size() > positionQuota[pos]) {
+                std::cout << "Can't set Player Roster, over quota: " << pos << " " << positionQuota[pos] << std::endl;
+                return false;
+            }
+            for (auto& p:playerSet) {
+                if (!canPlace(p, pos)) {
+                    return false;
+                }
+            }
+        }
+
+        //placing
+        for (auto& [pos, playerSet] : newPlacement) {
+            for (auto& p:playerSet) {
+                addToBench(p);
+                if (!placePlayer(p, pos, false)) {
+                    std::cout << "error in setPlayerPlacement" << std::endl;
+                    throw 1;
+                }
+            }
+        }
         
         return true;
 

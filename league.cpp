@@ -96,12 +96,52 @@ namespace League {
         
     }
 
-    bool League::teamPlacePlayer(int teamNo, std::string playerId, std::string position, bool force = true){
-        return teamList[teamNo].placePlayerToDate(currDate, &idToPlayer[playerId], position, force);
+    bool League::teamPlacePlayer(int teamNo, std::string playerId, std::string position, bool force = true) {
+        if (idToTeamNumber[playerId] != -1 && idToTeamNumber[playerId] != teamNo) {
+            return false;
+        }
+        bool res = teamList[teamNo].placePlayerToDate(currDate, &idToPlayer[playerId], position, force);
+        if (res) {
+            idToTeamNumber[playerId] = teamNo;
+        }
+        return res;
     }
 
-    bool League::teamSwapPlayerPlacement(int teamNo, std::string playerReplacerId, std::string playerReplaceeI, bool force = true){
-        return teamList[teamNo].swapPlayerPlacementToDate(currDate, &idToPlayer[playerReplacerId], &idToPlayer[playerReplaceeI], force);
+    bool League::teamSwapPlayerPlacement(int teamNo, std::string playerReplacerId, std::string playerReplaceeId, bool force = true) {
+        if (idToTeamNumber[playerReplacerId] != -1 && idToTeamNumber[playerReplacerId] != teamNo) {
+            return false;
+        }
+        if (idToTeamNumber[playerReplaceeId] != teamNo) {
+            return false;
+        }
+        bool res = teamList[teamNo].swapPlayerPlacementToDate(currDate, &idToPlayer[playerReplacerId], &idToPlayer[playerReplaceeId], force);
+        
+        if (res) {
+            idToTeamNumber[playerReplacerId] = teamNo;
+        }
+        return res;
+    }
+
+    bool League::teamSetPlayerPlacement(int teamNo, std::unordered_map<std::string, std::unordered_set<std::string>> newPlacementId) {
+        for (auto& [_, placement] : newPlacementId) {
+            for (auto& playerId : placement) {
+                if (idToTeamNumber[playerId] != -1 && idToTeamNumber[playerId] != teamNo) {
+                    return false;
+                }
+            }
+        }
+        std::unordered_map<std::string, std::unordered_set<Player::Player*>> newPlacement;
+        for (auto& [pos, playerIdSet] : newPlacementId) {
+            for (auto pId: playerIdSet) {
+                newPlacement[pos].insert(&idToPlayer[pId]);
+            }
+        }
+        for (auto& [_, placement] : newPlacementId) {
+            for (auto& playerId : placement) {
+                idToTeamNumber[playerId] = teamNo;
+            }
+        }
+        return teamList[teamNo].setPlayerPlacementToDate(currDate, newPlacement);
     }
 
     void League::setCategory(std::unordered_set<std::string> customCategories) {
@@ -165,7 +205,7 @@ namespace League {
                 Player::Player newPlayer(player_id, parsed_line["player"]);
                 idToPlayer[player_id] = newPlayer;
                 idToTeamNumber[player_id] = -1;
-                std::cout << "New Player\t" << parsed_line["player"] << std::endl;
+                std::cout << "New Player\t" << parsed_line["player"] << "\t" << parsed_line["player_id"] << std::endl;
             }
 
             // Add GameLog
