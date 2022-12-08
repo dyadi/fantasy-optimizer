@@ -26,7 +26,7 @@ namespace Player {
     }
 
     std::unordered_map<std::string, std::string> Player::getInfo(){
-        return std::unordered_map<std::string, std::string> {{"playerId",playerId}, {"playerName", playerName}};
+        return std::unordered_map<std::string, std::string> {{"playerId", playerId}, {"playerName", playerName}};
     }
 
     void Player::addPosition(std::string pos) {
@@ -60,6 +60,31 @@ namespace Player {
 
     int Player::getGameLogSize(){
         return date2gamelog.size();
+    }
+
+    void Player::updateAvgStats(){
+
+        int gameCnt = getGameLogSize();
+
+        GameLog::GameLog sumGameLog;
+        for (auto& [_, gl] : date2gamelog) {
+            sumGameLog += gl;
+        }
+
+        auto avgStats = sumGameLog.getStats();
+
+        for (auto& [cat, val] : avgStats) {
+            if (cat == "fgpct" || cat == "ftpct" || cat == "3ppct" || cat == "astovr") {
+                continue;
+            }
+            avgStats[cat] /= gameCnt;
+        }
+
+        avgStats["score"] = avgStats["pts"] + 3*avgStats["blk"] + 2*avgStats["stl"] + 2*avgStats["ast"] +
+                            1.5*avgStats["orb"] + avgStats["drb"] * 1.5*avgStats["trb"] - 2*avgStats["tov"] + 
+                            avgStats["dd"] + avgStats["fgm"] - 1.5*(1/(avgStats["fgpct"]/avgStats["fgm"]-avgStats["fgm"])) - 
+                            0.5*(1/(avgStats["ftpct"]/avgStats["ftm"]-avgStats["ftm"])) + 2*avgStats["3pm"];
+
     }
 
 }

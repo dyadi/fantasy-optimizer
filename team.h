@@ -16,6 +16,10 @@ namespace Match {
     class Match;
 }
 
+namespace Optimizer {
+    class StupidOptimizer;
+}
+
 namespace Team {
 
     class Team {
@@ -33,6 +37,7 @@ namespace Team {
 
             Roster::Roster& getRoster(std::chrono::sys_days);
             GameLog::GameLog getDailySum(std::chrono::sys_days);
+            GameLog::GameLog getDailySum(std::chrono::sys_days, std::map<std::chrono::sys_days, Roster::Roster>);
 
             bool copyRoster(std::chrono::sys_days, std::chrono::sys_days);
 
@@ -42,6 +47,7 @@ namespace Team {
             std::map<std::chrono::sys_days, Roster::Roster> dailyRoster;
 
         friend class Match::Match;
+        friend class Optimizer::StupidOptimizer;
 
     };
 }

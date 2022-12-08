@@ -33,11 +33,16 @@ namespace Player {
 
             int getGameLogSize();
 
+            void updateAvgStats();
+
         private:
             std::string playerId;
             std::string playerName;
+            std::unordered_map<std::string, double> avgStats;
+
             std::unordered_set<std::string> positions;
             std::map<std::chrono::sys_days, GameLog::GameLog> date2gamelog;
+            
 
     };
 

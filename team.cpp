@@ -55,12 +55,17 @@ namespace Team {
         return dailyRoster[date].getSum(date);
     }
 
+    GameLog::GameLog Team::getDailySum(std::chrono::sys_days date, std::map<std::chrono::sys_days, Roster::Roster> optimalRoster){
+        return optimalRoster[date].getSum(date);
+    }
+
     bool Team::copyRoster(std::chrono::sys_days toDate, std::chrono::sys_days fromDate){
         if (!dailyRoster.count(fromDate)) {
             std::cout << "can't copy from a date not in dailyRoster" << std::endl;
             return false;
         }
         dailyRoster[toDate] = dailyRoster[fromDate];
+
         return true;
     }
 

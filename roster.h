@@ -2,12 +2,17 @@
 #define ROSTER_H
 
 #include <iostream>
+#include <vector>
 #include <string>
 #include <unordered_set>
 #include <unordered_map>
 
 #include "player.h"
 #include "gamelog.h"
+
+namespace Optimizer {
+    class StupidOptimizer;
+}
 
 namespace Roster {
     
@@ -16,7 +21,7 @@ namespace Roster {
         public:
             Roster();
             Roster(int, int, int, int, int, int, int, int, int);
-            // Roster(const Roster&);
+            Roster(const Roster&);
             bool isInRoster(Player::Player*);
             bool addToBench(Player::Player*);
             bool placePlayer(Player::Player*, std::string, bool);
@@ -52,7 +57,9 @@ namespace Roster {
 
             std::unordered_map<std::string, int> positionQuota;
 
-            std::string positionTitle[9] {"BN", "PG", "SG", "SF", "PF", "C", "G", "F", "UTIL"};
+            std::vector<std::string> positionTitle {"BN", "PG", "SG", "SF", "PF", "C", "G", "F", "UTIL"};
+
+        friend class Optimizer::StupidOptimizer;
 
     };
 

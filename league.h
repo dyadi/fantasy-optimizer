@@ -17,6 +17,10 @@ namespace Match {
     class Match;
 }
 
+namespace Optimizer {
+    class StupidOptimizer;
+}
+
 namespace League {
 
     class League {
@@ -50,6 +54,7 @@ namespace League {
             int weeklyBudget;
             
         friend class Match::Match;
+        friend class Optimizer::StupidOptimizer;
         
     };
 }

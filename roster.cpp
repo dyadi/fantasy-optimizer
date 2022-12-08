@@ -24,7 +24,13 @@ namespace Roster {
         
     }
 
-    // Roster::Roster(const Roster& rhs) {}
+    Roster::Roster(const Roster& rhs) {
+        playerPlacement = rhs.playerPlacement;
+        positionQuota = rhs.positionQuota;
+        // for (int i = 0; i < 9; ++i){
+        //     positionTitle[i] = rhs.positionTitle[i];
+        // }
+    }
 
     bool Roster::isInRoster(Player::Player* player) {
         for (auto& [_, pp] : playerPlacement) {

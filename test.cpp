@@ -6,14 +6,15 @@
 
 #include "league.h"
 #include "match.h"
+#include "optimizer.h"
 
 int main() {
 
     std::string currTime = "2022-10-24";
 
-    // std::istringstream iss {"2020-12-21"};
-    // std::chrono::sys_days theDayPoint;
-    // iss >> date::parse("%F", theDayPoint);
+    std::istringstream iss {"2020-10-24"};
+    std::chrono::sys_days theDayPoint;
+    iss >> date::parse("%F", theDayPoint);
     
     League::League testLeague(currTime);
     
@@ -27,12 +28,16 @@ int main() {
     testLeague.showTeams();
 
     std::unordered_map<std::string, std::unordered_set<std::string>> newPlacement{
-        {"PG", std::unordered_set<std::string>{"poolejo01"}},
-        {"SG", std::unordered_set<std::string>{"maxeyty01"}},
-        {"C", std::unordered_set<std::string>{"claxtni01"}},
-        {"PF", std::unordered_set<std::string>{"antetgi01"}},
-        {"SF", std::unordered_set<std::string>{"butleji01"}}
+        {"BN", std::unordered_set<std::string>{"poolejo01", "maxeyty01", "claxtni01", "antetgi01", "butleji01"}}
     };
+
+    // std::unordered_map<std::string, std::unordered_set<std::string>> newPlacement{
+    //     {"PG", std::unordered_set<std::string>{"poolejo01"}},
+    //     {"SG", std::unordered_set<std::string>{"maxeyty01"}},
+    //     {"C", std::unordered_set<std::string>{"claxtni01"}},
+    //     {"PF", std::unordered_set<std::string>{"antetgi01"}},
+    //     {"SF", std::unordered_set<std::string>{"butleji01"}}
+    // };
     
     // testLeague.teamAddPlayer(0, "antetgi01");
     // testLeague.teamAddPlayer(0, "adebaba01");
@@ -58,9 +63,14 @@ int main() {
     testLeague.showTeamPlayers(1);
 
     Match::Match newMatch("fff321755", "dyadi", &testLeague);
+    
 
     newMatch.createWeekRosterBaseOnModay();
     newMatch.simulate();
+    newMatch.showResults();
+
+    Optimizer::StupidOptimizer optimizer(&newMatch);
+    newMatch.applyOptimizer(theDayPoint, &optimizer);
     newMatch.showResults();
     
     return 0;
