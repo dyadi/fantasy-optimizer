@@ -59,14 +59,17 @@ int main() {
     // newMatch.applyOptimizer(theDayPoint, &optimizer);
     // newMatch.showResults();
 
-    // std::cout << "\n\n\n\nGreedyOptimizer\n\n";
+    std::cout << "\n\n\n\nGreedyOptimizer\n\n";
     Optimizer::GreedyOptimizer greedyOptimizer(&newMatch);
-    // newMatch.applyOptimizer(theDayPoint, &greedyOptimizer);
-    // newMatch.showResults();
+    newMatch.applyOptimizer(theDayPoint, &greedyOptimizer);
+    newMatch.showResults();
 
     std::cout << "\n\nStreamOptimizer\n\n";
     testLeague.teamAddPlayerToWatchList(0, "bookede01");
-    testLeague.teamAddPlayerToWatchList(1, "curryst01");
+    testLeague.teamAddPlayerToWatchList(0, "davisan02");
+    testLeague.teamAddPlayerToWatchList(0, "bolbo01");
+
+
     Optimizer::StreamOptimizer streamOptimzer(&newMatch);
     newMatch.applyOptimizer(theDayPoint, &streamOptimzer);
     newMatch.showResults();
