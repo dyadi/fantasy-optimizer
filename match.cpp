@@ -32,7 +32,26 @@ namespace Match {
         std::cout << "\t" << myTeam->getName() << "\t" << oppoTeam->getName() << std::endl;
         for (auto& [cat, _]:myFinalStats) {
             if (league->categories[cat]) {
-                std::cout << std::setprecision(4) << cat << "\t" << myFinalStats[cat] << "\t\t" << oppoFinalStats[cat] << std::endl;
+                if (cat != "tov" && cat != "to") {
+                    if (myFinalStats[cat] > oppoFinalStats[cat]) {
+                        std::cout << std::setprecision(3) << cat << "\t" << myFinalStats[cat] << " v\t\t" << oppoFinalStats[cat] << std::endl;
+                    } else if ((myFinalStats[cat] < oppoFinalStats[cat])) {
+                        std::cout << std::setprecision(3) << cat << "\t" << myFinalStats[cat] << "\t\t" << oppoFinalStats[cat] << " v" << std::endl;
+                    } else {
+                        std::cout << std::setprecision(3) << cat << "\t" << myFinalStats[cat] << "\t\t" << oppoFinalStats[cat] << std::endl;
+
+                    }
+                } else {
+                    if (myFinalStats[cat] < oppoFinalStats[cat]) {
+                        std::cout << std::setprecision(3) << cat << "\t" << myFinalStats[cat] << " v\t\t" << oppoFinalStats[cat] << std::endl;
+                    } else if (myFinalStats[cat] > oppoFinalStats[cat]) {
+                        std::cout << std::setprecision(3) << cat << "\t" << myFinalStats[cat] << "\t\t" << oppoFinalStats[cat] << " v" << std::endl;
+                    } else {
+                        std::cout << std::setprecision(3) << cat << "\t" << myFinalStats[cat] << "\t\t" << oppoFinalStats[cat] << std::endl;
+                    }
+
+                }
+                
             }
         }
 
@@ -194,6 +213,5 @@ namespace Match {
 
         return score;
     }
-
 
 }
