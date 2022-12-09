@@ -5,7 +5,7 @@
 namespace GameLog {
     GameLog::GameLog() : fg(0), fga(0), fg3(0), fg3a(0), ft(0), fta(0), orb(0), drb(0), ast(0), stl(0), blk(0), tov(0), pf(0) {}
     
-    GameLog::GameLog(int fg, int fga, int fg3, int fg3a, int ft, int fta, int orb, int drb, int ast, int stl, int blk, int tov, int pf) :
+    GameLog::GameLog(double fg, double fga, double fg3, double fg3a, double ft, double fta, double orb, double drb, double ast, double stl, double blk, double tov, double pf) :
         fg(fg), fga(fga), fg3(fg3), fg3a(fg3a), ft(ft), fta(fta), orb(orb), drb(drb), ast(ast), stl(stl), blk(blk), tov(tov), pf(pf) {}
 
     GameLog GameLog::operator+(const GameLog& rhs) {
@@ -98,19 +98,38 @@ namespace GameLog {
         std::cout << fg << "\t" <<  fga << "\t" <<  fg3 << "\t" <<  fg3a << "\t" <<  ft << "\t" <<  fta << "\t" <<  orb << "\t" <<  drb << "\t" <<  ast << "\t" <<  stl << "\t" <<  blk << "\t" <<  tov << "\t" <<  pf << std::endl;
     }
 
-    void GameLog::clear(){
-            fg = 0;
-            fga = 0;
-            fg3 = 0;
-            fg3a = 0;
-            ft = 0;
-            fta = 0;
-            orb = 0;
-            drb = 0;
-            ast = 0;
-            stl = 0;
-            blk = 0;
-            tov = 0;
-            pf = 0;
+    void GameLog::clear() {
+        fg = 0;
+        fga = 0;
+        fg3 = 0;
+        fg3a = 0;
+        ft = 0;
+        fta = 0;
+        orb = 0;
+        drb = 0;
+        ast = 0;
+        stl = 0;
+        blk = 0;
+        tov = 0;
+        pf = 0;
+    }
+
+    void GameLog::devideAll(int divisor) {
+        if (divisor == 0) {
+            throw 1;
+        }
+        fg /= divisor;
+        fga /= divisor;
+        fg3 /= divisor;
+        fg3a /= divisor;
+        ft /= divisor;
+        fta /= divisor;
+        orb /= divisor;
+        drb /= divisor;
+        ast /= divisor;
+        stl /= divisor;
+        blk /= divisor;
+        tov /= divisor;
+        pf /= divisor;
     }
 }

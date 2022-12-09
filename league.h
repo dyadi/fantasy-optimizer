@@ -11,8 +11,6 @@
 #include "player.h"
 #include "team.h"
 
-// #include "match.h"
-
 namespace Match {
     class Match;
 }
@@ -20,6 +18,7 @@ namespace Match {
 namespace Optimizer {
     class StupidOptimizer;
     class GreedyOptimizer;
+    class StreamOptimizer;
 }
 
 namespace League {
@@ -33,6 +32,9 @@ namespace League {
             void showTeams();
             void showTeamPlayers(int);
             void teamAddPlayer(int, std::string);
+            void teamDropPlayer(int, std::string);
+            void teamAddPlayerToWatchList(int, std::string);
+            void teamDropPlayerFromWatchList(int, std::string);
             bool teamPlacePlayer(int, std::string, std::string, bool);
             bool teamSwapPlayerPlacement(int, std::string, std::string, bool);
             bool teamSetPlayerPlacement(int, std::unordered_map<std::string, std::unordered_set<std::string>>);
@@ -57,6 +59,8 @@ namespace League {
         friend class Match::Match;
         friend class Optimizer::StupidOptimizer;
         friend class Optimizer::GreedyOptimizer;
+        friend class Optimizer::StreamOptimizer;
+
         
     };
 }

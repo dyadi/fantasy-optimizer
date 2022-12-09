@@ -5,14 +5,13 @@
 
 #include "optimizer.h"
 
-
 using date::operator<<;
 
 namespace Match {
 
-    Match::Match(Team::Team* myTeam, Team::Team* oppoTeam, League::League* league) : myTeam(myTeam), oppoTeam(oppoTeam), league(league) {}
+    Match::Match(Team::Team* myTeam, Team::Team* oppoTeam, League::League* league) : myTeam(myTeam), oppoTeam(oppoTeam), league(league), myBudget(league->weeklyBudget), oppoBudget(league->weeklyBudget) {}
     
-    Match::Match(std::string myTeamName, std::string oppoTeamName, League::League* league) : league(league) {
+    Match::Match(std::string myTeamName, std::string oppoTeamName, League::League* league) : league(league), myBudget(league->weeklyBudget), oppoBudget(league->weeklyBudget) {
         for(auto& team : league->teamList) {
             if(team.getName() == myTeamName) {
                 myTeam = &team;
@@ -116,19 +115,79 @@ namespace Match {
 
     void Match::applyOptimizer(std::chrono::sys_days startDate, Optimizer::BaseOptimizer* optimizer) {
 
-        auto myResult = optimizer->getOptimalRoster(startDate, myTeam);
-        auto oppoResult = optimizer->getOptimalRoster(startDate, oppoTeam);
-        for (auto& [dt, ros]: myResult) {
+        auto myOptimalRoster = optimizer->getOptimalRoster(startDate, myTeam);
+        std::cout << "My optimization done\n";
+        auto oppoOptimalRoster = optimizer->getOptimalRoster(startDate, oppoTeam);
+        std::cout << "Oppo optimization done\n";
+        for (auto& [dt, ros]: myOptimalRoster) {
             std::cout << dt;
             ros.showRoster();
         }
-        for (auto& [dt, ros]: oppoResult) {
+        for (auto& [dt, ros]: oppoOptimalRoster) {
             std::cout << dt;
             ros.showRoster();
         }
-        simulate(myResult, myTeam);
-        simulate(oppoResult, oppoTeam);
+        simulate(myOptimalRoster, myTeam);
+        simulate(oppoOptimalRoster, oppoTeam);
 
+    }
+
+    void Match::applyOptimizer(std::chrono::sys_days startDate, Optimizer::BaseOptimizer* myOptimizer, Optimizer::BaseOptimizer* oppoOptimizer) {
+
+        auto myOptimalRoster = myOptimizer->getOptimalRoster(startDate, myTeam);
+        auto oppoOptimalRoster = oppoOptimizer->getOptimalRoster(startDate, oppoTeam);
+        for (auto& [dt, ros]: myOptimalRoster) {
+            std::cout << dt;
+            ros.showRoster();
+        }
+        for (auto& [dt, ros]: oppoOptimalRoster) {
+            std::cout << dt;
+            ros.showRoster();
+        }
+        simulate(myOptimalRoster, myTeam);
+        simulate(oppoOptimalRoster, oppoTeam);
+
+    }
+
+    double Match::getForecastScore(std::chrono::sys_days startDate, Roster::Roster proposedRoster, Optimizer::GreedyOptimizer* optimizer) {
+        
+        std::chrono::sys_days monday = league->currDate - (date::weekday{league->currDate} - date::Monday);
+        std::chrono::sys_days sunday = monday + std::chrono::days{6};
+
+        GameLog::GameLog currResult;
+        
+        for (auto currDay = monday; currDay < startDate; currDay += std::chrono::days{1}) {
+            currResult += myTeam->getRoster(currDay).getSum(currDay);
+        }
+
+        auto forecastDailyRoster = optimizer->getOptimalRosterForecast(startDate, proposedRoster);
+
+        for (auto currDay = startDate; currDay <= sunday; currDay += std::chrono::days{1}) {
+            currResult += myTeam->getDailySumForecast(currDay, forecastDailyRoster);
+        }
+
+        auto oppoOptimalRoster = optimizer->getOptimalRoster(startDate, oppoTeam);
+        simulate(oppoOptimalRoster, oppoTeam);
+        
+        auto proposedStatsForecast = currResult.getStats();
+        auto oppoStatsForecast = oppoResult.getStats();
+        
+        // currResult.showGameLog();
+        // oppoResult.showGameLog();
+        return getScore(proposedStatsForecast, oppoStatsForecast);
+
+    }
+
+    double Match::getScore(std::unordered_map<std::string, double> myStats, std::unordered_map<std::string, double> oppoStats) {
+        
+        double score = 0;
+        for(auto& [cat, _]: myStats) {
+            double diffpct = (myStats[cat] - oppoStats[cat]) / (std::max(myStats[cat],oppoStats[cat]) + 0.001);
+            diffpct = std::min(diffpct, 0.2);
+            score += diffpct;
+        }
+
+        return score;
     }
 
 

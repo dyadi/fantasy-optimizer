@@ -15,6 +15,7 @@
 namespace Optimizer {
     class StupidOptimizer;
     class GreedyOptimizer;
+    class StreamOptimizer;
 }
 
 namespace Roster {
@@ -37,7 +38,10 @@ namespace Roster {
             int getTotalLimit();
             int getTotalPlayer();
             void showRoster();
+            void setPositionQuota(std::string, int);
             GameLog::GameLog getSum(std::chrono::sys_days);
+            GameLog::GameLog getSumForecast(std::chrono::sys_days);
+
 
         private:
             // std::unordered_set<Player::Player*> pgRoster;
@@ -66,6 +70,8 @@ namespace Roster {
 
         friend class Optimizer::StupidOptimizer;
         friend class Optimizer::GreedyOptimizer;
+        friend class Optimizer::StreamOptimizer;
+
 
     };
 

@@ -49,6 +49,7 @@ namespace Player {
         //     throw 50;
         // }
 
+        ++GamePlayed;
         dateToGameLog[date] = gamelog;
         // if (player_id == "bridgmi01") {
         //     std::cout << player_id << " game played " << dateToGameLog.size() << std::endl;
@@ -63,15 +64,20 @@ namespace Player {
         return dateToGameLog[date];
     }
 
+    GameLog::GameLog Player::getSumGameLog() {
+        return sumGameLog;
+    }
+
     int Player::getGameLogSize(){
-        return dateToGameLog.size();
+        return GamePlayed;
     }
 
     void Player::updateAvgStats(){
 
         int gameCnt = getGameLogSize();
 
-        GameLog::GameLog sumGameLog;
+        sumGameLog.clear();
+
         for (auto& [_, gl] : dateToGameLog) {
             sumGameLog += gl;
         }
@@ -100,5 +106,6 @@ namespace Player {
     bool Player::willPlay(std::chrono::sys_days date) {
         return (bool) dateToGameLog.count(date);
     }
+
 
 }

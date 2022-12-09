@@ -11,6 +11,7 @@ namespace Optimizer {
     class BaseOptimizer;
     class StupidOptimizer;
     class GreedyOptimizer;
+    class StreamOptimizer;
 }
 
 namespace Match {
@@ -27,14 +28,20 @@ namespace Match {
             void showResults();
             void createWeekRosterBaseOnMonday();
             void applyOptimizer(std::chrono::sys_days, Optimizer::BaseOptimizer*);
+            void applyOptimizer(std::chrono::sys_days, Optimizer::BaseOptimizer*, Optimizer::BaseOptimizer*);
+            double getForecastScore(std::chrono::sys_days, Roster::Roster, Optimizer::GreedyOptimizer*);
+            double getScore(std::unordered_map<std::string, double>, std::unordered_map<std::string, double>);
+
 
         private:
             Team::Team *myTeam, *oppoTeam;
             GameLog::GameLog myResult, oppoResult;
             League::League* league;
+            int myBudget, oppoBudget;
 
         friend class Optimizer::StupidOptimizer;
         friend class Optimizer::GreedyOptimizer;
+        friend class Optimizer::StreamOptimizer;
 
     };
     

@@ -30,6 +30,8 @@ namespace Player {
             void addGameLog(std::chrono::sys_days, GameLog::GameLog);
 
             GameLog::GameLog getGameLog(std::chrono::sys_days);
+            
+            GameLog::GameLog getSumGameLog();
 
             int getGameLogSize();
 
@@ -39,10 +41,15 @@ namespace Player {
 
             bool willPlay(std::chrono::sys_days);
 
+
+
         private:
             std::string playerId;
             std::string playerName;
             std::unordered_map<std::string, double> avgStats;
+            GameLog::GameLog sumGameLog;
+            int GamePlayed = 0;
+
 
             std::unordered_set<std::string> positions;
             std::map<std::chrono::sys_days, GameLog::GameLog> dateToGameLog;

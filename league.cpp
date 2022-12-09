@@ -77,20 +77,20 @@ namespace League {
         std::cout << std::endl;
     }
 
-    void League::teamAddPlayer(int teamNo, std::string playerId){
+    void League::teamAddPlayer(int teamNo, std::string playerId) {
         
-        if (teamNo >= teamList.size()) {
-            std::cout << "No team for given team number." << std::endl;
+        if (teamNo < 0 || teamNo >= teamList.size()) {
+            std::cout << "Invalid team number\n";
             return;
         }
 
-        if (!idToPlayer.count(playerId)){
-            std::cout << "No such player exists." << std::endl;
+        if (!idToPlayer.count(playerId)) {
+            std::cout << "Invalid player id\n";
             return;
         }
 
         if (idToTeamNumber[playerId] != -1) {
-            std::cout << "Player is not a free agent." << std::endl;
+            std::cout << "Player " << playerId << " is not a free agent\n";
             return;
         }
         
@@ -99,6 +99,61 @@ namespace League {
         }
         
     }
+
+    void League::teamDropPlayer(int teamNo, std::string playerId) {
+
+        if (teamNo < 0 || teamNo >= teamList.size()) {
+            std::cout << "Invalid team number\n";
+            return;
+        }
+
+        if (!idToPlayer.count(playerId)) {
+            std::cout << "Invalid player id\n";
+            return;
+        }
+
+        if (idToTeamNumber[playerId] != teamNo) {
+            std::cout << "Player " << playerId << " is not owned by the given team\n";
+            return;
+        }
+
+        if (teamList[teamNo].dropPlayer(currDate, &idToPlayer[playerId])) {
+            idToTeamNumber[playerId] = -1;
+        }
+
+    }
+
+    void League::teamAddPlayerToWatchList(int teamNo, std::string playerId) {
+
+        if (teamNo < 0 || teamNo >= teamList.size()) {
+            std::cout << "Invalid team number\n";
+            return;
+        }
+
+        if (!idToPlayer.count(playerId)) {
+            std::cout << "Invalid player id\n";
+            return;
+        }
+
+        teamList[teamNo].addPlayerToWatchList(&idToPlayer[playerId]);
+
+    };
+
+    void League::teamDropPlayerFromWatchList(int teamNo, std::string playerId) {
+
+        if (teamNo < 0 || teamNo >= teamList.size()) {
+            std::cout << "Invalid team number\n";
+            return;
+        }
+
+        if (!idToPlayer.count(playerId)){
+            std::cout << "Invalid player id\n";
+            return;
+        }
+
+        teamList[teamNo].dropPlayerFromWatchList(&idToPlayer[playerId]);
+
+    };
 
     bool League::teamPlacePlayer(int teamNo, std::string playerId, std::string position, bool force = true) {
         if (idToTeamNumber[playerId] != -1 && idToTeamNumber[playerId] != teamNo) {

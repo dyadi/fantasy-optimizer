@@ -19,6 +19,7 @@ namespace Match {
 namespace Optimizer {
     class StupidOptimizer;
     class GreedyOptimizer;
+    class StreamOptimizer;
 }
 
 namespace Team {
@@ -32,6 +33,10 @@ namespace Team {
             bool addPlayer(std::chrono::sys_days, Player::Player*);
             bool dropPlayer(std::chrono::sys_days, Player::Player*);
 
+            void addPlayerToWatchList(Player::Player*);
+            void dropPlayerFromWatchList(Player::Player*);
+            std::unordered_set<Player::Player*> getWatchList();
+
             bool placePlayerToDate(std::chrono::sys_days, Player::Player*, std::string, bool);
             bool swapPlayerPlacementToDate(std::chrono::sys_days, Player::Player*, Player::Player*, bool);
             bool setPlayerPlacementToDate(std::chrono::sys_days, std::unordered_map<std::string, std::unordered_set<Player::Player*>>);
@@ -39,6 +44,8 @@ namespace Team {
             Roster::Roster& getRoster(std::chrono::sys_days);
             GameLog::GameLog getDailySum(std::chrono::sys_days);
             GameLog::GameLog getDailySum(std::chrono::sys_days, std::map<std::chrono::sys_days, Roster::Roster>);
+            GameLog::GameLog getDailySumForecast(std::chrono::sys_days, std::map<std::chrono::sys_days, Roster::Roster>);
+
 
             bool copyRoster(std::chrono::sys_days, std::chrono::sys_days);
 
@@ -46,10 +53,12 @@ namespace Team {
         private:
             std::string teamName;
             std::map<std::chrono::sys_days, Roster::Roster> dailyRoster;
+            std::unordered_set<Player::Player*> watchList;
 
         friend class Match::Match;
         friend class Optimizer::StupidOptimizer;
         friend class Optimizer::GreedyOptimizer;
+        friend class Optimizer::StreamOptimizer;
 
     };
 }

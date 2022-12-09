@@ -11,7 +11,7 @@ namespace GameLog {
         public:
             GameLog();
 
-            GameLog(int, int, int, int, int, int, int, int, int, int, int, int, int);
+            GameLog(double, double, double, double, double, double, double, double, double, double, double, double, double);
             
             GameLog operator+(const GameLog&);
 
@@ -23,22 +23,24 @@ namespace GameLog {
 
             void clear();
 
-        private:
-            int fg;
-            int fga;
-            int fg3;
-            int fg3a;
-            int ft;
-            int fta;
+            void devideAll(int);
 
-            int orb;
-            int drb;
+        private:
+            double fg;
+            double fga;
+            double fg3;
+            double fg3a;
+            double ft;
+            double fta;
+
+            double orb;
+            double drb;
             
-            int ast;
-            int stl;
-            int blk;
-            int tov;
-            int pf;
+            double ast;
+            double stl;
+            double blk;
+            double tov;
+            double pf;
 
             // std::unordered_map<std::string, int> coreStats;
             // std::string coreStatsTitle[13] = {"fg", "fga", "fg3", "fg3a", "ft", "fta", "orb", "drb", "ast", "stl", "blk", "tov", "pf"}

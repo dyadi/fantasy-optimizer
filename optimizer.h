@@ -36,7 +36,17 @@ namespace Optimizer {
         public:
             GreedyOptimizer(Match::Match*);
             std::map<std::chrono::sys_days, Roster::Roster> getOptimalRoster(std::chrono::sys_days, Team::Team*);
+            std::map<std::chrono::sys_days, Roster::Roster> getOptimalRosterForecast(std::chrono::sys_days, Roster::Roster);
 
+    };
+
+    class StreamOptimizer : public BaseOptimizer {
+
+        public:
+            StreamOptimizer(Match::Match*);
+            std::map<std::chrono::sys_days, Roster::Roster> getOptimalRoster(std::chrono::sys_days, Team::Team*);
+            Player::Player* getOptimalStreamer(std::chrono::sys_days startDate, Team::Team* team, std::string playerDrop);
+            
     };
 
 }

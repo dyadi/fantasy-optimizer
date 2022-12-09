@@ -255,6 +255,10 @@ namespace Roster {
         std::cout << std::endl;
     }
 
+    void Roster::setPositionQuota(std::string pos, int newQouta) {
+        positionQuota[pos] = newQouta;
+    }
+
     GameLog::GameLog Roster::getSum(std::chrono::sys_days date) {
         GameLog::GameLog gamelog;
         
@@ -263,6 +267,24 @@ namespace Roster {
                 for (auto& player : placement) {
                     if (player->willPlay(date)) {
                         gamelog += player->getGameLog(date);
+                    }
+                }
+            }
+        }
+
+        return gamelog;
+    }
+
+    GameLog::GameLog Roster::getSumForecast(std::chrono::sys_days date) {
+        GameLog::GameLog gamelog;
+
+        for (auto& [key, placement] : playerPlacement) {
+            if (key != "BN") {
+                for (auto& player : placement) {
+                    if (player->willPlay(date)) {
+                        auto avgGameLog = player->getSumGameLog();
+                        avgGameLog.devideAll(player->getGameLogSize());  
+                        gamelog += avgGameLog;
                     }
                 }
             }

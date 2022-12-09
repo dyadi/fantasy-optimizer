@@ -35,6 +35,18 @@ namespace Team {
 
     }
 
+    void Team::addPlayerToWatchList(Player::Player* player) {
+        watchList.insert(player);
+    }
+
+    void Team::dropPlayerFromWatchList(Player::Player* player) {
+        watchList.erase(player);
+    }
+
+    std::unordered_set<Player::Player*> Team::getWatchList() {
+        return watchList;
+    }
+
     bool Team::placePlayerToDate(std::chrono::sys_days date, Player::Player* player, std::string position, bool force = true) {
         return dailyRoster[date].placePlayer(player, position, force);
     }
@@ -57,6 +69,10 @@ namespace Team {
 
     GameLog::GameLog Team::getDailySum(std::chrono::sys_days date, std::map<std::chrono::sys_days, Roster::Roster> optimalRoster){
         return optimalRoster[date].getSum(date);
+    }
+
+    GameLog::GameLog Team::getDailySumForecast(std::chrono::sys_days date, std::map<std::chrono::sys_days, Roster::Roster> optimalRoster){
+        return optimalRoster[date].getSumForecast(date);
     }
 
     bool Team::copyRoster(std::chrono::sys_days toDate, std::chrono::sys_days fromDate){
