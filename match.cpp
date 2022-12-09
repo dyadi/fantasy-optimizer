@@ -135,13 +135,13 @@ namespace Match {
     void Match::applyOptimizer(std::chrono::sys_days startDate, Optimizer::BaseOptimizer* optimizer) {
 
         auto myOptimalRoster = optimizer->getOptimalRoster(startDate, myTeam);
-        std::cout << "My optimization done\n";
+        // std::cout << "My optimization done\n";
         auto oppoOptimalRoster = optimizer->getOptimalRoster(startDate, oppoTeam);
-        std::cout << "Oppo optimization done\n";
-        // for (auto& [dt, ros]: myOptimalRoster) {
-        //     std::cout << dt;
-        //     ros.showRoster();
-        // }
+        // std::cout << "Oppo optimization done\n";
+        for (auto& [dt, ros]: myOptimalRoster) {
+            std::cout << dt;
+            ros.showRoster();
+        }
         // for (auto& [dt, ros]: oppoOptimalRoster) {
         //     std::cout << dt;
         //     ros.showRoster();
@@ -155,10 +155,10 @@ namespace Match {
 
         auto myOptimalRoster = myOptimizer->getOptimalRoster(startDate, myTeam);
         auto oppoOptimalRoster = oppoOptimizer->getOptimalRoster(startDate, oppoTeam);
-        // for (auto& [dt, ros]: myOptimalRoster) {
-        //     std::cout << dt;
-        //     ros.showRoster();
-        // }
+        for (auto& [dt, ros]: myOptimalRoster) {
+            std::cout << dt;
+            ros.showRoster();
+        }
         // for (auto& [dt, ros]: oppoOptimalRoster) {
         //     std::cout << dt;
         //     ros.showRoster();

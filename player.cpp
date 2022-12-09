@@ -92,7 +92,7 @@ namespace Player {
         }
 
         avgStats["score"] = avgStats["pts"] + 3*avgStats["blk"] + 2*avgStats["stl"] + 2*avgStats["ast"] +
-                            1.5*avgStats["orb"] + avgStats["drb"] * 1.5*avgStats["trb"] - 2*avgStats["tov"] + 
+                            1.5*avgStats["orb"] + avgStats["drb"] + 1.5*avgStats["trb"] - 2*avgStats["tov"] + 
                             avgStats["dd"] + avgStats["fgm"] - 1.5*(1/(avgStats["fgpct"]/avgStats["fgm"]-avgStats["fgm"])) - 
                             0.5*(1/(avgStats["ftpct"]/avgStats["ftm"]-avgStats["ftm"])) + 2*avgStats["3pm"];
 

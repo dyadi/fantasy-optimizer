@@ -53,7 +53,7 @@ namespace League {
             std::unordered_map<std::string, bool> categories;
             std::vector<std::string> categoryKey {"fgm", "fgpct", "ftm", "ftpct", "3pm", "3pmpct", "pts", "astor", "drb", "orb", "trb", "ast", "stl", "blk", "tov", "dd"};
 
-            int weeklyBudget;
+            int weeklyBudget = 8;
             int waiverDelay = 2;
             
         friend class Match::Match;
