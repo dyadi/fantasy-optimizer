@@ -207,11 +207,10 @@ namespace Match {
         double score = 0;
         for(auto& [cat, _]: myStats) {
             double diffpct = (myStats[cat] - oppoStats[cat]) / (std::max(myStats[cat],oppoStats[cat]) + 0.001);
-            diffpct = std::min(diffpct, 0.2);
+            diffpct = std::min(std::max(diffpct, -0.2), 0.2);
             score += diffpct;
         }
 
         return score;
     }
-
 }
