@@ -119,14 +119,14 @@ namespace Match {
         std::cout << "My optimization done\n";
         auto oppoOptimalRoster = optimizer->getOptimalRoster(startDate, oppoTeam);
         std::cout << "Oppo optimization done\n";
-        for (auto& [dt, ros]: myOptimalRoster) {
-            std::cout << dt;
-            ros.showRoster();
-        }
-        for (auto& [dt, ros]: oppoOptimalRoster) {
-            std::cout << dt;
-            ros.showRoster();
-        }
+        // for (auto& [dt, ros]: myOptimalRoster) {
+        //     std::cout << dt;
+        //     ros.showRoster();
+        // }
+        // for (auto& [dt, ros]: oppoOptimalRoster) {
+        //     std::cout << dt;
+        //     ros.showRoster();
+        // }
         simulate(myOptimalRoster, myTeam);
         simulate(oppoOptimalRoster, oppoTeam);
 
@@ -136,14 +136,14 @@ namespace Match {
 
         auto myOptimalRoster = myOptimizer->getOptimalRoster(startDate, myTeam);
         auto oppoOptimalRoster = oppoOptimizer->getOptimalRoster(startDate, oppoTeam);
-        for (auto& [dt, ros]: myOptimalRoster) {
-            std::cout << dt;
-            ros.showRoster();
-        }
-        for (auto& [dt, ros]: oppoOptimalRoster) {
-            std::cout << dt;
-            ros.showRoster();
-        }
+        // for (auto& [dt, ros]: myOptimalRoster) {
+        //     std::cout << dt;
+        //     ros.showRoster();
+        // }
+        // for (auto& [dt, ros]: oppoOptimalRoster) {
+        //     std::cout << dt;
+        //     ros.showRoster();
+        // }
         simulate(myOptimalRoster, myTeam);
         simulate(oppoOptimalRoster, oppoTeam);
 
@@ -151,6 +151,7 @@ namespace Match {
 
     double Match::getForecastScore(std::chrono::sys_days startDate, Roster::Roster proposedRoster, Optimizer::GreedyOptimizer* optimizer) {
         
+
         std::chrono::sys_days monday = league->currDate - (date::weekday{league->currDate} - date::Monday);
         std::chrono::sys_days sunday = monday + std::chrono::days{6};
 
@@ -167,11 +168,15 @@ namespace Match {
         }
 
         auto oppoOptimalRoster = optimizer->getOptimalRoster(startDate, oppoTeam);
-        simulate(oppoOptimalRoster, oppoTeam);
+
+        GameLog::GameLog oppoResultForecase;
+        for (auto currDay = monday; currDay <= sunday; currDay += std::chrono::days{1}) {
+            oppoResultForecase += oppoOptimalRoster[currDay].getSumForecast(currDay);
+        }
         
         auto proposedStatsForecast = currResult.getStats();
-        auto oppoStatsForecast = oppoResult.getStats();
-        
+        auto oppoStatsForecast = oppoResultForecase.getStats();
+
         // currResult.showGameLog();
         // oppoResult.showGameLog();
         return getScore(proposedStatsForecast, oppoStatsForecast);

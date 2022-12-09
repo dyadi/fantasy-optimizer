@@ -41,7 +41,6 @@ namespace League {
             void showPlayer(std::string);
             void setCategory(std::unordered_set<std::string>);
             
-
             int getPlayerCnt();
 
         private:
@@ -55,6 +54,7 @@ namespace League {
             std::vector<std::string> categoryKey {"fgm", "fgpct", "ftm", "ftpct", "3pm", "3pmpct", "pts", "astor", "drb", "orb", "trb", "ast", "stl", "blk", "tov", "dd"};
 
             int weeklyBudget;
+            int waiverDelay = 2;
             
         friend class Match::Match;
         friend class Optimizer::StupidOptimizer;

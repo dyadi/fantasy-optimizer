@@ -113,29 +113,13 @@ namespace Optimizer {
 
             std::set<Player::Player*, decltype(cmp)> currDayWillPlay;
             
-            // currDateRoster.showRoster();
             currDateRoster.placeAllToBench();
-            // currDateRoster.showRoster();
-            
-            
-            // std::cout << ">>>>" << std::endl;
-
-            // std::cout << "Size: " << currDateRoster.playerPlacement["BN"].size() << std::endl;
-
-            // for (auto& player : currDateRoster.playerPlacement["BN"]) {
-            //     std::cout << "id: " << player->getInfo()["playerId"] << std::endl;
-            //     std::cout << "name: " << player->getInfo()["playerName"] << std::endl;
-            // }
-
-            // std::cout << "end of >>>>" << std::endl;
-
+  
             for (auto& player : currDateRoster.playerPlacement["BN"]) {
                 if (player->willPlay(currDay)) {
                     currDayWillPlay.insert(player);
                 }
             }
-
-            // std::cout << "<<<<" << std::endl;
 
             for (auto& player : currDayWillPlay){
                 for (auto& pos : currDateRoster.positionTitle) {
@@ -148,7 +132,7 @@ namespace Optimizer {
                 }
             }
             
-
+            // currDateRoster.showRoster();
             optimalRoster[currDay] = currDateRoster;
         }
         
@@ -170,10 +154,9 @@ namespace Optimizer {
         
         double bestScore = match->getForecastScore(startDate, team->getRoster(startDate), &greedyOptimizer);
 
-        std::cout << bestStreamer->getInfo()["playerName"] << ":>>>" << bestScore << std::endl;
+        // std::cout << bestStreamer->getInfo()["playerName"] << ":>>>" << bestScore << std::endl;
 
         for (auto& candidate : team->getWatchList()) {
-            // std::cout << candidate->getInfo()["playerName"] << ":tN " << match->league->idToTeamNumber[playerIdToDrop] << std::endl;
 
             if (match->league->idToTeamNumber[candidate->getInfo()["playerId"]] != -1) {
                 continue;
@@ -183,19 +166,13 @@ namespace Optimizer {
             replacedRoster.dropFromEverySpot(playerDrop);
             replacedRoster.addToBench(candidate);
             double score = match->getForecastScore(startDate, replacedRoster, &greedyOptimizer);
-            std::cout << candidate->getInfo()["playerName"] << ":>>>" << score << std::endl;
+            // std::cout << candidate->getInfo()["playerName"] << ":>>>" << score << std::endl;
             
             if (score >= bestScore) {
                 bestScore = score;
                 bestStreamer = candidate;
             }
         
-        }
-
-        if (bestStreamer==nullptr) {
-            throw 1;
-        } else {
-            std::cout << "bestStreamer: " << bestStreamer->getInfo()["playerName"] << std::endl;
         }
 
         return bestStreamer;
@@ -217,11 +194,27 @@ namespace Optimizer {
 
         auto currDateRoster = team->dailyRoster[startDate];
 
+        std::unordered_map<Player::Player*, std::chrono::sys_days> addedToRoster;
+        std::unordered_map<Player::Player*, std::chrono::sys_days> dropFromRosterWaiver;
+
         for (auto currDay = startDate; currDay <= sunday; currDay += std::chrono::days{1}) {
+
+            
+            // clear waiver constrain
+            std::unordered_map<Player::Player*, std::chrono::sys_days> newDropFromRosterWaiver;
+            for (auto& [player, waiverDate]: dropFromRosterWaiver) {
+                if (waiverDate > currDay) {
+                    newDropFromRosterWaiver[player] = waiverDate;
+                } else {
+                    team->addPlayerToWatchList(player);
+                }
+            }
+            dropFromRosterWaiver = newDropFromRosterWaiver;
 
             // do greedy if no enough budget
             if ((team == match->myTeam && match->myBudget == 0) || (team == match->oppoTeam && match->oppoBudget == 0)) {
-                auto greedyOptimalRoster = greedyOptimizer.getOptimalRoster(currDay, team);
+                // auto greedyOptimalRoster = greedyOptimizer.getOptimalRoster(currDay, team);
+                auto greedyOptimalRoster = greedyOptimizer.getOptimalRosterForecast(currDay, currDateRoster);
                 for (; currDay <= sunday; currDay += std::chrono::days{1}) {
                     optimalRoster[currDay] = greedyOptimalRoster[currDay];
                 }
@@ -230,8 +223,12 @@ namespace Optimizer {
 
             // find player to drop (player with lowest score)
             Player::Player* playerToDrop = nullptr;
-
-            for (auto& [_, placement] : team->dailyRoster[startDate].playerPlacement) {
+            for (auto& [player, dateAdded]: addedToRoster) {
+                if (!playerToDrop || player->getAvgStats()["score"] < playerToDrop->getAvgStats()["score"]) {
+                    playerToDrop = player;
+                }
+            }
+            for (auto& [_, placement] : currDateRoster.playerPlacement) {
                 for (auto player : placement) {
                     if (!playerToDrop || player->getAvgStats()["score"] < playerToDrop->getAvgStats()["score"]) {
                         playerToDrop = player;
@@ -244,10 +241,16 @@ namespace Optimizer {
 
             if (optimalStreamer == playerToDrop) {
                 // do nothing
-                std::cout << "optimalStreamer == playerToDrop\n";
+                // std::cout << "optimalStreamer == playerToDrop\n";
             } else {
                 // replace player
-                std::cout << "optimalStreamer != playerToDrop\n";
+                // std::cout << "optimalStreamer != playerToDrop\n";
+                std::cout << "Date: " << currDay << "\tDrop: " << playerToDrop->getInfo()["playerName"] <<  "\tAdd: " <<  optimalStreamer->getInfo()["playerName"] << "\n";
+
+                dropFromRosterWaiver[playerToDrop] = currDay + std::chrono::days{match->league->waiverDelay};
+                addedToRoster[optimalStreamer] = currDay;
+                team->dropPlayerFromWatchList(optimalStreamer);
+
                 currDateRoster.dropFromEverySpot(playerToDrop);
                 currDateRoster.addToBench(optimalStreamer);
                 if (team == match->myTeam) {
@@ -258,15 +261,14 @@ namespace Optimizer {
                 }
             }
 
-            std::cout << "5555"<< std::endl;
-
-
             // do greedy optimization
             currDateRoster = greedyOptimizer.getOptimalRosterForecast(currDay, currDateRoster)[currDay];
 
-            std::cout << "6666"<< std::endl;
-
             optimalRoster[currDay] = currDateRoster;
+        }
+
+        for (auto& [player, waiverDate]: dropFromRosterWaiver) {
+            team->addPlayerToWatchList(player);
         }
 
         return optimalRoster;

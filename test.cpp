@@ -50,7 +50,8 @@ int main() {
 
     Match::Match newMatch("fff321755", "figo", &testLeague);
     
-    // newMatch.createWeekRosterBaseOnMonday();
+    newMatch.createWeekRosterBaseOnMonday();
+
     // newMatch.simulate();
     // newMatch.showResults();
 
@@ -65,13 +66,17 @@ int main() {
     newMatch.showResults();
 
     std::cout << "\n\nStreamOptimizer\n\n";
-    testLeague.teamAddPlayerToWatchList(0, "bookede01");
-    testLeague.teamAddPlayerToWatchList(0, "davisan02");
-    testLeague.teamAddPlayerToWatchList(0, "bolbo01");
+    testLeague.teamAddPlayerToWatchList(0, "nesmiaa01");
+    testLeague.teamAddPlayerToWatchList(0, "jacksis01");
+    testLeague.teamAddPlayerToWatchList(0, "kesslwa01");
+    // testLeague.teamAddPlayerToWatchList(0, "mathube01");
+    // testLeague.teamAddPlayerToWatchList(0, "walkelo01");
+    // testLeague.teamAddPlayerToWatchList(0, "carteje01");
+    // testLeague.teamAddPlayerToWatchList(0, "davisan02");
 
 
     Optimizer::StreamOptimizer streamOptimzer(&newMatch);
-    newMatch.applyOptimizer(theDayPoint, &streamOptimzer);
+    newMatch.applyOptimizer(theDayPoint, &streamOptimzer, &greedyOptimizer);
     newMatch.showResults();
     
     return 0;
