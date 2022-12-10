@@ -130,12 +130,14 @@ Optimizer::StreamOptimizer streamOptimzer(&newMatch); // opponent's optimizer
 newMatch.applyOptimizer(currDate, &streamOptimzer, &greedyOptimizer);
 // suppose opponent's strategy is greedy, optimize our roster against it
 ```
+![we lost it, my deer image](image/rosterSuggestions.png)
 
 ### Show result
 ``` c++
 // print the final result
 newMatch.showResults();
 ```
+![we lost it, my deer image](image/showResult.png)
 
 Category strings:
 - "fgm": Field Goal Made
