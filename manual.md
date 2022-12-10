@@ -119,9 +119,9 @@ Arguments:
 The first function doesn't do optimization for the opponent; the second one takes an additional argument of opponent's optimizer against which we optimize for.
 
 Currently there are three optimizers available:
-- StupidOptimizer: place as many players as possible
-- GreedyOptimizer: only consider players playing today and place best players first (based on scoring  system)
-- StreamOptimizer: drop the worst player (based on our prediction) and pick the best substitution from our watchlist
+- ```StupidOptimizer```: place as many players as possible
+- ```GreedyOptimizer```: only consider players playing today and place best players first (based on scoring  system)
+- ```StreamOptimizer```: drop the worst player (based on our prediction) and pick the best substitution from our watchlist
 
 ``` c++
 // print daily roster suggestion and add/drop suggestion
