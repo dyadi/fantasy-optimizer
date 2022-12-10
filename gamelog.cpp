@@ -72,25 +72,7 @@ namespace GameLog {
         ret["dd"] = ((ret["pts"] >= 10.0) + (ret["trb"] >= 10.0) + (ret["ast"] >= 10.0) + (ret["blk"] >= 10.0) + (ret["stl"] >= 10.0) >= 1.5) ? 1.0 : 0.0;
         
         return ret;
-
-        // const std::string cata[16] = {
-        //     "fgm",
-        //     "fgpct",
-        //     "ftm",
-        //     "ftpct",
-        //     "3pm",
-        //     "3ppct",
-        //     "pts",
-        //     "astovr",
-        //     "drb",
-        //     "orb",
-        //     "trb",
-        //     "ast",
-        //     "stl",
-        //     "blk",
-        //     "tov",
-        //     "dd"
-        // }
+        
     }
 
     void GameLog::showGameLog(){

@@ -42,28 +42,9 @@ namespace Roster {
             GameLog::GameLog getSum(std::chrono::sys_days);
             GameLog::GameLog getSumForecast(std::chrono::sys_days);
 
-
         private:
-            // std::unordered_set<Player::Player*> pgRoster;
-            // std::unordered_set<Player::Player*> sgRoster;
-            // std::unordered_set<Player::Player*> gRoster;
-            // std::unordered_set<Player::Player*> sfRoster;
-            // std::unordered_set<Player::Player*> pfRoster;
-            // std::unordered_set<Player::Player*> fRoster;
-            // std::unordered_set<Player::Player*> utilRoster;
-            // std::unordered_set<Player::Player*> bench;
 
             std::unordered_map<std::string, std::unordered_set<Player::Player*>> playerPlacement;
-
-            // int sgLimit;
-            // int pgLimit;
-            // int gLimit;
-            // int sfLimit;
-            // int pfLimit;
-            // int fLimit;
-            // int utilLimit;
-            // int benchSpot;
-
             std::unordered_map<std::string, int> positionQuota;
 
             std::vector<std::string> positionTitle {"BN", "PG", "SG", "SF", "PF", "C", "G", "F", "UTIL"};
@@ -72,9 +53,7 @@ namespace Roster {
         friend class Optimizer::GreedyOptimizer;
         friend class Optimizer::StreamOptimizer;
 
-
     };
-
 }
 
 #endif

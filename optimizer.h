@@ -48,7 +48,6 @@ namespace Optimizer {
             Player::Player* getOptimalStreamer(std::chrono::sys_days startDate, Team::Team* team, std::string playerDrop);
             
     };
-
 }
 
 #endif

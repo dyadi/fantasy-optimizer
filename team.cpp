@@ -60,6 +60,7 @@ namespace Team {
     }
 
     Roster::Roster& Team::getRoster(std::chrono::sys_days date){
+        assert(dailyRoster.count(date));
         return dailyRoster[date];
     }
 

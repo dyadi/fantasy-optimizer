@@ -21,19 +21,14 @@ namespace League {
         std::chrono::sys_days tp;
         iss >> date::parse("%F", tp);
         currDate = tp;
-
         setCategory(std::unordered_set<std::string> {"fgpct", "ftpct", "3pm", "pts", "trb", "ast", "stl", "blk", "tov"});
-
         loadData();
-
     }
 
     League::League(std::chrono::sys_days currDate) : currDate(currDate) {
         setCategory(std::unordered_set<std::string> {"fgpct", "ftpct", "3pm", "pts", "trb", "ast", "stl", "blk", "tov"});
         loadData();
     }
-    
-    // League::League(std::chrono::sys_days currDate) : currDate(currDate) {}
 
     void League::showPlayer(std::string player_id) {
         
@@ -41,16 +36,12 @@ namespace League {
             std::cout << player_id << " not in the league" << std::endl;
             return;
         }
-
         idToPlayer[player_id].showInfo();
-
         return;
-
     }
     
     int League::getPlayerCnt() {
         return idToPlayer.size();
-
     }
 
     void League::addTeam(std::string teamName) {
@@ -83,12 +74,12 @@ namespace League {
             std::cout << "Invalid team number\n";
             return;
         }
-
+        
         if (!idToPlayer.count(playerId)) {
             std::cout << "Invalid player id\n";
             return;
         }
-
+        
         if (idToTeamNumber[playerId] != -1) {
             std::cout << "Player " << playerId << " is not a free agent\n";
             return;
@@ -97,7 +88,6 @@ namespace League {
         if (teamList[teamNo].addPlayer(currDate, &idToPlayer[playerId])) {
             idToTeamNumber[playerId] = teamNo;
         }
-        
     }
 
     void League::teamDropPlayer(int teamNo, std::string playerId) {
@@ -106,21 +96,20 @@ namespace League {
             std::cout << "Invalid team number\n";
             return;
         }
-
+        
         if (!idToPlayer.count(playerId)) {
             std::cout << "Invalid player id\n";
             return;
         }
-
+        
         if (idToTeamNumber[playerId] != teamNo) {
             std::cout << "Player " << playerId << " is not owned by the given team\n";
             return;
         }
-
+        
         if (teamList[teamNo].dropPlayer(currDate, &idToPlayer[playerId])) {
             idToTeamNumber[playerId] = -1;
         }
-
     }
 
     void League::teamAddPlayerToWatchList(int teamNo, std::string playerId) {
@@ -129,14 +118,13 @@ namespace League {
             std::cout << "Invalid team number\n";
             return;
         }
-
+        
         if (!idToPlayer.count(playerId)) {
             std::cout << "Invalid player id\n";
             return;
         }
-
+        
         teamList[teamNo].addPlayerToWatchList(&idToPlayer[playerId]);
-
     };
 
     void League::teamDropPlayerFromWatchList(int teamNo, std::string playerId) {
@@ -145,20 +133,20 @@ namespace League {
             std::cout << "Invalid team number\n";
             return;
         }
-
+        
         if (!idToPlayer.count(playerId)){
             std::cout << "Invalid player id\n";
             return;
         }
-
+        
         teamList[teamNo].dropPlayerFromWatchList(&idToPlayer[playerId]);
-
     };
 
     bool League::teamPlacePlayer(int teamNo, std::string playerId, std::string position, bool force = true) {
         if (idToTeamNumber[playerId] != -1 && idToTeamNumber[playerId] != teamNo) {
             return false;
         }
+        
         bool res = teamList[teamNo].placePlayerToDate(currDate, &idToPlayer[playerId], position, force);
         if (res) {
             idToTeamNumber[playerId] = teamNo;
@@ -167,21 +155,25 @@ namespace League {
     }
 
     bool League::teamSwapPlayerPlacement(int teamNo, std::string playerReplacerId, std::string playerReplaceeId, bool force = true) {
+        
         if (idToTeamNumber[playerReplacerId] != -1 && idToTeamNumber[playerReplacerId] != teamNo) {
             return false;
         }
+       
         if (idToTeamNumber[playerReplaceeId] != teamNo) {
             return false;
         }
-        bool res = teamList[teamNo].swapPlayerPlacementToDate(currDate, &idToPlayer[playerReplacerId], &idToPlayer[playerReplaceeId], force);
         
+        bool res = teamList[teamNo].swapPlayerPlacementToDate(currDate, &idToPlayer[playerReplacerId], &idToPlayer[playerReplaceeId], force);
         if (res) {
             idToTeamNumber[playerReplacerId] = teamNo;
         }
+        
         return res;
     }
 
     bool League::teamSetPlayerPlacement(int teamNo, std::unordered_map<std::string, std::unordered_set<std::string>> newPlacementId) {
+        
         for (auto& [_, placement] : newPlacementId) {
             for (auto& playerId : placement) {
                 if (idToTeamNumber[playerId] != -1 && idToTeamNumber[playerId] != teamNo) {
@@ -189,12 +181,14 @@ namespace League {
                 }
             }
         }
+
         std::unordered_map<std::string, std::unordered_set<Player::Player*>> newPlacement;
         for (auto& [pos, playerIdSet] : newPlacementId) {
             for (auto pId: playerIdSet) {
                 newPlacement[pos].insert(&idToPlayer[pId]);
             }
         }
+
         for (auto& [_, placement] : newPlacementId) {
             for (auto& playerId : placement) {
                 idToTeamNumber[playerId] = teamNo;
@@ -238,6 +232,7 @@ namespace League {
         int cnt = 0;
 
         while(getline(raw_file, raw_line)){
+            
             // parsing
             pos = 0;
             col = 0;
@@ -264,7 +259,7 @@ namespace League {
                 Player::Player newPlayer(player_id, parsed_line["player"]);
                 idToPlayer[player_id] = newPlayer;
                 idToTeamNumber[player_id] = -1;
-                // std::cout << "New Player\t" << parsed_line["player"] << "\t" << parsed_line["player_id"] << std::endl;
+                std::cout << "[Player Added]\t" << parsed_line["player_id"] << ":\t" << parsed_line["player"] << std::endl;
             }
 
             // Add GameLog
@@ -317,34 +312,14 @@ namespace League {
                 std::cout << parsed_line["C%"] << std::endl;
                 throw 100;
             }
- 
-            // std::cout << "hi2" << std::endl;
-
-
-            // debug
-            // std::cout << "================================================" << std::endl;
-            // for (auto& [key, val]: parsed_line){
-            //     std::cout << key << "\t\t" << val << std::endl;
-            // }
-            // std::cout << "================================================" << std::endl;
 
             cnt++;
         }
-        
-
-        int sum = 0;
-        for(auto& [pid, ath] : idToPlayer) {
-            sum += ath.getGameLogSize();
-        }
-
-        std::cout << "raw cnt:" << cnt << "\ngameLog cnt:" << sum << std::endl;
 
         for(auto & [_, p] : idToPlayer) {
             p.updateAvgStats();
         }
 
-
         return;
     }
-
 }

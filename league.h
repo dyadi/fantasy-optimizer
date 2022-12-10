@@ -27,7 +27,6 @@ namespace League {
         public:
             League(std::string);
             League(std::chrono::sys_days);
-            void loadData();
             void addTeam(std::string);
             void showTeams();
             void showTeamPlayers(int);
@@ -44,14 +43,13 @@ namespace League {
             int getPlayerCnt();
 
         private:
-            // call by constructor, load data
-            // std::vector<Player> player_list;
+            void loadData();
             std::unordered_map<std::string, Player::Player> idToPlayer;
             std::unordered_map<std::string, int> idToTeamNumber;
             std::vector<Team::Team> teamList;
             std::chrono::sys_days currDate;
             std::unordered_map<std::string, bool> categories;
-            std::vector<std::string> categoryKey {"fgm", "fgpct", "ftm", "ftpct", "3pm", "3pmpct", "pts", "astor", "drb", "orb", "trb", "ast", "stl", "blk", "tov", "dd"};
+            std::vector<std::string> categoryKey {"fgm", "fgpct", "ftm", "ftpct", "3pm", "3ppct", "pts", "astor", "drb", "orb", "trb", "ast", "stl", "blk", "tov", "dd"};
 
             int weeklyBudget = 8;
             int waiverDelay = 2;
@@ -60,7 +58,6 @@ namespace League {
         friend class Optimizer::StupidOptimizer;
         friend class Optimizer::GreedyOptimizer;
         friend class Optimizer::StreamOptimizer;
-
         
     };
 }

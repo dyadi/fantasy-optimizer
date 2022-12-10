@@ -132,7 +132,6 @@ namespace Optimizer {
                 }
             }
             
-            // currDateRoster.showRoster();
             optimalRoster[currDay] = currDateRoster;
         }
         
@@ -166,7 +165,6 @@ namespace Optimizer {
             replacedRoster.dropFromEverySpot(playerDrop);
             replacedRoster.addToBench(candidate);
             double score = match->getForecastScore(startDate, replacedRoster, &greedyOptimizer);
-            // std::cout << candidate->getInfo()["playerName"] << ":>>>" << score << std::endl;
             
             if (score >= bestScore) {
                 bestScore = score;
@@ -213,7 +211,6 @@ namespace Optimizer {
 
             // do greedy if no enough budget
             if ((team == match->myTeam && match->myBudget == 0) || (team == match->oppoTeam && match->oppoBudget == 0)) {
-                // auto greedyOptimalRoster = greedyOptimizer.getOptimalRoster(currDay, team);
                 auto greedyOptimalRoster = greedyOptimizer.getOptimalRosterForecast(currDay, currDateRoster);
                 for (; currDay <= sunday; currDay += std::chrono::days{1}) {
                     optimalRoster[currDay] = greedyOptimalRoster[currDay];
@@ -240,11 +237,9 @@ namespace Optimizer {
             auto optimalStreamer = getOptimalStreamer(currDay, team, playerToDrop->getInfo()["playerId"]);
 
             if (optimalStreamer == playerToDrop) {
-                // do nothing
-                // std::cout << "optimalStreamer == playerToDrop\n";
+                // do noting
             } else {
                 // replace player
-                // std::cout << "optimalStreamer != playerToDrop\n";
                 std::cout << "Date: " << currDay << "\tDrop: " << playerToDrop->getInfo()["playerName"] <<  "\tAdd: " <<  optimalStreamer->getInfo()["playerName"] << "\n";
 
                 dropFromRosterWaiver[playerToDrop] = currDay + std::chrono::days{match->league->waiverDelay};
@@ -263,7 +258,6 @@ namespace Optimizer {
 
             // do greedy optimization
             currDateRoster = greedyOptimizer.getOptimalRosterForecast(currDay, currDateRoster)[currDay];
-
             optimalRoster[currDay] = currDateRoster;
         }
 
@@ -274,5 +268,4 @@ namespace Optimizer {
         return optimalRoster;
 
     }
-
 }

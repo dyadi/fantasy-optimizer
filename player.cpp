@@ -20,9 +20,7 @@ namespace Player {
             std::cout << pos << " ";
         }
         std::cout << "\n";
-
         std::cout << "GameLog Length\t" << dateToGameLog.size() << "\n";
-
         std::cout << std::endl;
 
     }
@@ -41,20 +39,9 @@ namespace Player {
 
     void Player::addGameLog(std::chrono::sys_days date, GameLog::GameLog gamelog) {
 
-        // if(player_id == "bridgmi01" && dateToGameLog.count(date)){
-        //     std::cout << "already in" << player_id << std::endl;
-        //     dateToGameLog[date].showGameLog();
-        //     gamelog.showGameLog();
-        //     std::cout << player_id << " game played " << dateToGameLog.size() << std::endl;
-        //     throw 50;
-        // }
-
         ++GamePlayed;
         dateToGameLog[date] = gamelog;
-        // if (player_id == "bridgmi01") {
-        //     std::cout << player_id << " game played " << dateToGameLog.size() << std::endl;
-        // }
-        
+
     }
 
     GameLog::GameLog Player::getGameLog(std::chrono::sys_days date) {
@@ -106,6 +93,4 @@ namespace Player {
     bool Player::willPlay(std::chrono::sys_days date) {
         return (bool) dateToGameLog.count(date);
     }
-
-
 }

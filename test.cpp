@@ -77,10 +77,6 @@ int main() {
     testLeague.teamAddPlayerToWatchList(0, "nesmiaa01");
     testLeague.teamAddPlayerToWatchList(0, "jacksis01");
     testLeague.teamAddPlayerToWatchList(0, "kesslwa01");
-    // testLeague.teamAddPlayerToWatchList(0, "mathube01");
-    // testLeague.teamAddPlayerToWatchList(0, "walkelo01");
-    // testLeague.teamAddPlayerToWatchList(0, "carteje01");
-    // testLeague.teamAddPlayerToWatchList(0, "davisan02");
     Optimizer::StreamOptimizer streamOptimzer(&newMatch);
     newMatch.applyOptimizer(theDayPoint, &streamOptimzer, &greedyOptimizer);
     newMatch.showResults();

@@ -12,16 +12,16 @@ namespace Match {
     Match::Match(Team::Team* myTeam, Team::Team* oppoTeam, League::League* league) : myTeam(myTeam), oppoTeam(oppoTeam), league(league), myBudget(league->weeklyBudget), oppoBudget(league->weeklyBudget) {}
     
     Match::Match(std::string myTeamName, std::string oppoTeamName, League::League* league) : league(league), myBudget(league->weeklyBudget), oppoBudget(league->weeklyBudget) {
+        
         for(auto& team : league->teamList) {
             if(team.getName() == myTeamName) {
                 myTeam = &team;
             }
+
             if(team.getName() == oppoTeamName) {
                 oppoTeam = &team;
             }
-            // myTeam = &league->teamList[i];
         }
-
     }
 
     void Match::showResults() {
@@ -30,6 +30,7 @@ namespace Match {
 
         std::cout << "===Match=Show=Result===" << std::endl;
         std::cout << "\t" << myTeam->getName() << "\t" << oppoTeam->getName() << std::endl;
+
         for (auto& [cat, _]:myFinalStats) {
             if (league->categories[cat]) {
                 if (cat != "tov" && cat != "to") {
@@ -90,8 +91,6 @@ namespace Match {
             myResult += myTeam->getDailySum(currDay);
             oppoResult += oppoTeam->getDailySum(currDay);
         }
-
-        // showResults();
         
         return true;
 
@@ -135,17 +134,13 @@ namespace Match {
     void Match::applyOptimizer(std::chrono::sys_days startDate, Optimizer::BaseOptimizer* optimizer) {
 
         auto myOptimalRoster = optimizer->getOptimalRoster(startDate, myTeam);
-        // std::cout << "My optimization done\n";
         auto oppoOptimalRoster = optimizer->getOptimalRoster(startDate, oppoTeam);
-        // std::cout << "Oppo optimization done\n";
+
         for (auto& [dt, ros]: myOptimalRoster) {
             std::cout << dt;
             ros.showRoster();
         }
-        // for (auto& [dt, ros]: oppoOptimalRoster) {
-        //     std::cout << dt;
-        //     ros.showRoster();
-        // }
+
         simulate(myOptimalRoster, myTeam);
         simulate(oppoOptimalRoster, oppoTeam);
 
@@ -155,14 +150,12 @@ namespace Match {
 
         auto myOptimalRoster = myOptimizer->getOptimalRoster(startDate, myTeam);
         auto oppoOptimalRoster = oppoOptimizer->getOptimalRoster(startDate, oppoTeam);
+
         for (auto& [dt, ros]: myOptimalRoster) {
             std::cout << dt;
             ros.showRoster();
         }
-        // for (auto& [dt, ros]: oppoOptimalRoster) {
-        //     std::cout << dt;
-        //     ros.showRoster();
-        // }
+
         simulate(myOptimalRoster, myTeam);
         simulate(oppoOptimalRoster, oppoTeam);
 
@@ -196,8 +189,6 @@ namespace Match {
         auto proposedStatsForecast = currResult.getStats();
         auto oppoStatsForecast = oppoResultForecase.getStats();
 
-        // currResult.showGameLog();
-        // oppoResult.showGameLog();
         return getScore(proposedStatsForecast, oppoStatsForecast);
 
     }

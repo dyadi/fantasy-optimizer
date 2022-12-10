@@ -24,12 +24,6 @@ namespace Roster {
         
     }
 
-    // Roster::Roster(const Roster& rhs) {
-    //     playerPlacement = rhs.playerPlacement;
-    //     positionQuota = rhs.positionQuota;
-    //     positionTitle = rhs.positionTitle;
-    // }
-
     bool Roster::isInRoster(Player::Player* player) {
         for (auto& [_, pp] : playerPlacement) {
             if (pp.count(player)) {
@@ -60,6 +54,7 @@ namespace Roster {
     }
 
     void Roster::placeAllToBench() {
+
         for (auto& [key, placement] : playerPlacement) {
             if (key != "BN") {
                 for (auto player : placement) {
@@ -71,8 +66,6 @@ namespace Roster {
     }
 
     bool Roster::placePlayer(Player::Player* player, std::string position, bool force = true) {
-
-        // std::cout << position << " <<<"<< std::endl;
 
         if (position == "BN") {
             return addToBench(player);
@@ -90,13 +83,16 @@ namespace Roster {
         if (!force && playerPlacement[position].size() >= positionQuota[position]) {
             return false;
         }
+
         // can place
         // remove from other positions
         dropFromEverySpot(player);
+
         // remove one player of this position if full
         if (playerPlacement[position].size() >= positionQuota[position]) {
             addToBench(*playerPlacement[position].begin());
         }
+
         // add to this position
         playerPlacement[position].insert(player);
         return true;
@@ -193,11 +189,12 @@ namespace Roster {
     }
 
     void Roster::dropAll() {
+
         int cnt = 0;
         for (auto& [_, pp] : playerPlacement) {
             pp.clear();
         }
-        std::cout << "Drop All: " << cnt << std::endl;
+
     }
 
     bool Roster::canPlace(Player::Player* player, std::string position) {
@@ -223,14 +220,18 @@ namespace Roster {
     }
 
     int Roster::getTotalLimit() {
+
         int limit = 0;
         for (auto& [_, pq] : positionQuota) {
             limit += pq;
         }
+
         return limit;
+
     }
 
     int Roster::getTotalPlayer() {
+
         int players = 0;
         for (auto& [_, pp] : playerPlacement) {
             players += pp.size();
@@ -239,24 +240,22 @@ namespace Roster {
     }
 
     void Roster::showRoster() {
+        
         std::cout << "==========Show=Roster==========" << std::endl;
-
-        // std::map<std::string, std::unordered_set<Player::Player*>> orderedplayerPlacement;
-
-        // for (auto&[pos, playerSet]:playerPlacement) {
-        //     orderedplayerPlacement[pos] = playerSet;
-        // }
 
         for (auto&[pos, playerSet]:playerPlacement) {
             for (auto player:playerSet) {
                 std::cout << pos << "\t" << player->getInfo()["playerName"] << std::endl;
             }
         }
+
         std::cout << std::endl;
     }
 
     void Roster::setPositionQuota(std::string pos, int newQouta) {
+        
         positionQuota[pos] = newQouta;
+
     }
 
     GameLog::GameLog Roster::getSum(std::chrono::sys_days date) {

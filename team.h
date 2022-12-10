@@ -10,8 +10,6 @@
 #include "player.h"
 #include "roster.h"
 
-// #include "match.h"
-
 namespace Match {
     class Match;
 }
@@ -25,7 +23,7 @@ namespace Optimizer {
 namespace Team {
 
     class Team {
-
+        
         public:
             Team(std::string);
             std::string getName();
@@ -46,9 +44,7 @@ namespace Team {
             GameLog::GameLog getDailySum(std::chrono::sys_days, std::map<std::chrono::sys_days, Roster::Roster>);
             GameLog::GameLog getDailySumForecast(std::chrono::sys_days, std::map<std::chrono::sys_days, Roster::Roster>);
 
-
             bool copyRoster(std::chrono::sys_days, std::chrono::sys_days);
-
 
         private:
             std::string teamName;
